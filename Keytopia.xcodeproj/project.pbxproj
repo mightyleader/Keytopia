@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D43CBA1E1AFB58A100644E7A /* AccessoryInputView.m in Sources */ = {isa = PBXBuildFile; fileRef = D43CBA1D1AFB58A100644E7A /* AccessoryInputView.m */; };
+		D43CBA211AFBD9D800644E7A /* DatasourceModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D43CBA201AFBD9D800644E7A /* DatasourceModel.m */; };
 		D4D7E4991AF9433600A25168 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D4D7E4981AF9433600A25168 /* main.m */; };
 		D4D7E49C1AF9433600A25168 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D4D7E49B1AF9433600A25168 /* AppDelegate.m */; };
 		D4D7E49F1AF9433600A25168 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D4D7E49E1AF9433600A25168 /* ViewController.m */; };
@@ -27,6 +29,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D43CBA1C1AFB58A100644E7A /* AccessoryInputView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccessoryInputView.h; sourceTree = "<group>"; };
+		D43CBA1D1AFB58A100644E7A /* AccessoryInputView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccessoryInputView.m; sourceTree = "<group>"; };
+		D43CBA1F1AFBD9D800644E7A /* DatasourceModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DatasourceModel.h; sourceTree = "<group>"; };
+		D43CBA201AFBD9D800644E7A /* DatasourceModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DatasourceModel.m; sourceTree = "<group>"; };
 		D4D7E4931AF9433600A25168 /* Keytopia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Keytopia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4D7E4971AF9433600A25168 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D4D7E4981AF9433600A25168 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -83,8 +89,12 @@
 			children = (
 				D4D7E49A1AF9433600A25168 /* AppDelegate.h */,
 				D4D7E49B1AF9433600A25168 /* AppDelegate.m */,
+				D43CBA1F1AFBD9D800644E7A /* DatasourceModel.h */,
+				D43CBA201AFBD9D800644E7A /* DatasourceModel.m */,
 				D4D7E49D1AF9433600A25168 /* ViewController.h */,
 				D4D7E49E1AF9433600A25168 /* ViewController.m */,
+				D43CBA1C1AFB58A100644E7A /* AccessoryInputView.h */,
+				D43CBA1D1AFB58A100644E7A /* AccessoryInputView.m */,
 				D4D7E4A01AF9433600A25168 /* Main.storyboard */,
 				D4D7E4A31AF9433600A25168 /* Images.xcassets */,
 				D4D7E4A51AF9433600A25168 /* LaunchScreen.xib */,
@@ -221,6 +231,8 @@
 			files = (
 				D4D7E49F1AF9433600A25168 /* ViewController.m in Sources */,
 				D4D7E49C1AF9433600A25168 /* AppDelegate.m in Sources */,
+				D43CBA1E1AFB58A100644E7A /* AccessoryInputView.m in Sources */,
+				D43CBA211AFBD9D800644E7A /* DatasourceModel.m in Sources */,
 				D4D7E4991AF9433600A25168 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -418,6 +430,7 @@
 				D4D7E4B81AF9433600A25168 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D4D7E4B91AF9433600A25168 /* Build configuration list for PBXNativeTarget "KeytopiaTests" */ = {
 			isa = XCConfigurationList;
@@ -426,6 +439,7 @@
 				D4D7E4BB1AF9433600A25168 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

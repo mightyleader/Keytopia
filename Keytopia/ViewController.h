@@ -6,10 +6,11 @@
 //  Copyright (c) 2015 cocoadelica. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+@import UIKit;
 
-@interface ViewController : UIViewController
+@interface ViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 
+@property (weak, nonatomic) IBOutlet UITableView *tableview;
 
 @end
 
