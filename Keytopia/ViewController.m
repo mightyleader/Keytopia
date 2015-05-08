@@ -26,13 +26,18 @@
 
 @implementation ViewController
 
+/**
+ *  All we do here is remove all notifications registered to this instance.
+ */
 - (void)dealloc
 {
   NSNotificationCenter *nCenter = [NSNotificationCenter defaultCenter];
   [nCenter removeObserver:self];
 }
 
-
+/**
+ *  Sets up the datasource, notifications, tableview and text input fields
+ */
 - (void)viewDidLoad
 {
   [super viewDidLoad];
@@ -42,7 +47,12 @@
   [self setupAccessoryInputViews];
 }
 
-
+/**
+ *  In here we set the textfield in our 'fake' text input area to be first responder.
+ *  This triggers the keyboard to show, which in turn triggers a notification.
+ *
+ *  @param animated whether to animate.
+ */
 - (void)viewWillAppear:(BOOL)animated
 {
   [super viewWillAppear:animated];
@@ -55,7 +65,9 @@
   _datasource = [[Datasource alloc] init];
 }
 
-
+/**
+ *  Register for the various keyboard notifications and send them to internal methods.
+ */
 - (void)setupNotifications
 {
   NSNotificationCenter *nCenter = [NSNotificationCenter defaultCenter];
@@ -81,7 +93,9 @@
                 object:nil];
 }
 
-
+/**
+ *  Sets up the tableview with cell type and styling. Also sets the initial insets around the fake text input view.
+ */
 - (void)setupTableview
 {
   [_tableview setKeyboardDismissMode:UIScrollViewKeyboardDismissModeInteractive];
@@ -92,7 +106,15 @@
   [self setTableViewInsets:tableViewInsets];
 }
 
-
+/**
+ *  Create the two accessory input view. 
+ *  A fake one which attaches to the bottom of the view permantely which triggers the keyboard to show when it's hidden
+ *  and hides when the keyboard shows.
+ *  The main one which we inset as the actual input accessory view of the text field in the fake one to make it appear above
+ *  keyboard and actually accept text input.
+ *  This main one also has this view controller as it's delegate and the target for it's button.
+ *  The fake one has no delegate or button action.
+ */
 - (void)setupAccessoryInputViews
 {
   CGRect realFrame = CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 44.0f);
@@ -110,7 +132,6 @@
                                         action:@selector(optionButtonTapped:)
                               forControlEvents:UIControlEventTouchUpInside];
 }
-
 
 - (void)setTableViewInsets:(UIEdgeInsets)edgeInsets
 {
