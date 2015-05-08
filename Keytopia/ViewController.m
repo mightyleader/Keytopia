@@ -8,14 +8,17 @@
 
 #import "ViewController.h"
 #import "AccessoryInputView.h"
-#import "DatasourceModel.h"
+#import "Datasource.h"
+#import "ModelMessage.h"
+#import "ModelStatus.h"
+
 
 #define kAccessoryInputViewHeight 44.0f
 #define kTableViewTopInset 20.0f
 
 @interface ViewController () <UITextFieldDelegate>
 
-@property (nonatomic) DatasourceModel *datasource;
+@property (nonatomic) Datasource *datasource;
 @property (nonatomic) AccessoryInputView *fauxAccessoryInputView;
 @property (nonatomic) AccessoryInputView *accessoryInputView;
 
@@ -49,7 +52,7 @@
 
 - (void)setupData
 {
-  _datasource = [[DatasourceModel alloc] init];
+  _datasource = [[Datasource alloc] init];
 }
 
 
@@ -83,7 +86,8 @@
 {
   [_tableview setKeyboardDismissMode:UIScrollViewKeyboardDismissModeInteractive];
   [_tableview registerClass:[UITableViewCell class] forCellReuseIdentifier:@"numberCell"];
-
+  [_tableview setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+  
   UIEdgeInsets tableViewInsets = UIEdgeInsetsMake(kTableViewTopInset, 0, kAccessoryInputViewHeight, 0);
   [self setTableViewInsets:tableViewInsets];
 }
@@ -102,6 +106,9 @@
   [_fauxAccessoryInputView.textfield becomeFirstResponder];
   
   [_accessoryInputView.textfield setDelegate:self];
+  [_accessoryInputView.optionsButton addTarget:self
+                                        action:@selector(optionButtonTapped:)
+                              forControlEvents:UIControlEventTouchUpInside];
 }
 
 
@@ -123,7 +130,7 @@
 - (NSInteger)tableView:(UITableView *)tableView
  numberOfRowsInSection:(NSInteger)section
 {
-  return _datasource.count;
+  return [_datasource count];
 }
 
 
@@ -131,13 +138,49 @@
          cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
   UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"numberCell"];
+
   
   NSInteger row = indexPath.row;
-  NSString *title = [_datasource objectAtIndex:row];
+  id<ModelProtocol> object = [_datasource objectAtIndex:row];
   
-  [cell.textLabel setText:title];
+  [cell.textLabel setText:[object message]];
+  
+  UIColor *textColour;
+  UIFont  *textFont;
+  
+  if ([object isKindOfClass:[ModelMessage class]]) {
+    [cell.textLabel setTextAlignment:NSTextAlignmentLeft];
+    textColour = [UIColor blackColor];
+    textFont = [UIFont systemFontOfSize:14.0];
+    cell.detailTextLabel.text = [[(ModelMessage *)object datePosted] description];
+  }
+  
+  if ([object isKindOfClass:[ModelStatus class]]) {
+    [cell.textLabel setTextAlignment:NSTextAlignmentCenter];
+    textColour = [UIColor grayColor];
+    textFont = [UIFont boldSystemFontOfSize:10.0];
+    cell.detailTextLabel.text = @""; // TODO: make a constant
+  }
+  
+  cell.textLabel.textColor = textColour;
+  cell.textLabel.font = textFont;
+  
   
   return cell;
+}
+
+
+#pragma mark - Button action
+
+- (void)optionButtonTapped:(id)sender
+{
+  // TODO: Replace with real thing
+  UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Select an option"
+                                                  message:@"Choose an thing to send in the chat"
+                                                 delegate:nil
+                                        cancelButtonTitle:@"Cancel"
+                                        otherButtonTitles:@"Photo", @"File", @"Cat GIF", nil];
+  [alert show];
 }
 
 
@@ -145,10 +188,14 @@
 
 - (void)scrollToLatestEntryAnimated:(BOOL)animated
 {
-  NSIndexPath *lastIndexPath = [NSIndexPath indexPathForRow:_datasource.count - 1 inSection:0];
-  [_tableview scrollToRowAtIndexPath:lastIndexPath
-                    atScrollPosition:UITableViewScrollPositionBottom
-                            animated:animated];
+  NSInteger datasourceCount = _datasource.count;
+  if (datasourceCount > 0) {
+    NSIndexPath *lastIndexPath = [NSIndexPath indexPathForRow:(datasourceCount - 1)
+                                                    inSection:0];
+    [_tableview scrollToRowAtIndexPath:lastIndexPath
+                      atScrollPosition:UITableViewScrollPositionBottom
+                              animated:animated];
+  }
 }
 
 
@@ -167,7 +214,7 @@
   NSValue *valueObject = userInfo[UIKeyboardFrameEndUserInfoKey];
   CGRect endFrame = valueObject.CGRectValue;
   
-  //get hte insets right on the tableview content
+  //get the insets right on the tableview content
   UIEdgeInsets tableViewInsets = UIEdgeInsetsMake(kTableViewTopInset, 0.0f, endFrame.size.height, 0.0f);
   [self setTableViewInsets:tableViewInsets];
   
@@ -211,12 +258,15 @@
   if ([textField isEqual:_accessoryInputView.textfield]) {
     if (textField.text.length > 0)
       {
-      [_datasource addToDatasource:textField.text];
-      [_tableview reloadData];
-      [self scrollToLatestEntryAnimated:YES];
-      [textField setText:@""];
-      return YES;
-    }
+        ModelMessage *message = [[ModelMessage alloc] initWithMessage:textField.text
+                                                           datePosted:[NSDate date]
+                                                                 sent:YES];
+        [_datasource addToDatasource:message];
+        [_tableview reloadData];
+        [self scrollToLatestEntryAnimated:YES];
+        [textField setText:@""];
+        return YES;
+      }
   }
   return NO;
 }
