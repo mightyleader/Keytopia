@@ -11,7 +11,7 @@
 
 @interface AccessoryInputView ()
 
-@property (nonatomic) UITextField *textfield;
+@property (nonatomic) UITextField  *textfield;
 @property (nonatomic) UIButton    *optionsButton;
 
 @end
@@ -62,18 +62,20 @@
 {
   NSDictionary *constrained = NSDictionaryOfVariableBindings(_optionsButton, _textfield);
   NSMutableArray *constraints = [NSMutableArray array];
-  [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-5-[_textfield]-[_optionsButton(==44)]-5-|"
+  [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-7-[_textfield]-7-[_optionsButton(==32)]-7-|"
                                                                            options:kNilOptions
                                                                            metrics:nil
                                                                              views:constrained]];
-  [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-5-[_textfield]-5-|"
+  [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-7-[_textfield]-7-|"
                                                                            options:kNilOptions
                                                                            metrics:nil
                                                                              views:constrained]];
-  [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[_optionsButton]-0-|"
+  [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-5-[_optionsButton]-5-|"
                                                                            options:kNilOptions
                                                                            metrics:nil
                                                                              views:constrained]];
+//  [constraints addObject:[NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.textfield attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0]];
+  
   [self addConstraints:constraints];
   [super updateConstraints];
 }

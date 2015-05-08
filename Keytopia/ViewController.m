@@ -12,6 +12,8 @@
 #import "ModelMessage.h"
 #import "ModelStatus.h"
 
+@import QuartzCore;
+
 
 #define kAccessoryInputViewHeight 44.0f
 #define kTableViewTopInset 20.0f
@@ -100,7 +102,8 @@
 {
   [_tableview setKeyboardDismissMode:UIScrollViewKeyboardDismissModeInteractive];
   [_tableview registerClass:[UITableViewCell class] forCellReuseIdentifier:@"numberCell"];
-  [_tableview setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+  [_tableview setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
+  [_tableview setSeparatorColor:[UIColor clearColor]];
   
   UIEdgeInsets tableViewInsets = UIEdgeInsetsMake(kTableViewTopInset, 0, kAccessoryInputViewHeight, 0);
   [self setTableViewInsets:tableViewInsets];
@@ -159,21 +162,27 @@
          cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
   UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"numberCell"];
-
   
   NSInteger row = indexPath.row;
   id<ModelProtocol> object = [_datasource objectAtIndex:row];
   
   [cell.textLabel setText:[object message]];
+  cell.selectionStyle = UITableViewCellSelectionStyleNone;
   
   UIColor *textColour;
   UIFont  *textFont;
   
+  [cell.textLabel.layer setCornerRadius:10.0];
+  [cell.textLabel.layer setMasksToBounds:YES];
+  [cell.textLabel setNumberOfLines:0];
+  [cell.textLabel setLineBreakMode:NSLineBreakByWordWrapping];
+  
   if ([object isKindOfClass:[ModelMessage class]]) {
     [cell.textLabel setTextAlignment:NSTextAlignmentLeft];
-    textColour = [UIColor blackColor];
+    textColour = [UIColor whiteColor];
     textFont = [UIFont systemFontOfSize:14.0];
     cell.detailTextLabel.text = [[(ModelMessage *)object datePosted] description];
+    cell.textLabel.backgroundColor = [UIColor orangeColor];
   }
   
   if ([object isKindOfClass:[ModelStatus class]]) {
@@ -181,6 +190,8 @@
     textColour = [UIColor grayColor];
     textFont = [UIFont boldSystemFontOfSize:10.0];
     cell.detailTextLabel.text = @""; // TODO: make a constant
+    [cell.textLabel.layer setCornerRadius:5.0];
+    cell.textLabel.backgroundColor = [UIColor clearColor];
   }
   
   cell.textLabel.textColor = textColour;
