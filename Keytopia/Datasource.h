@@ -7,11 +7,12 @@
 //
 
 @import Foundation;
+#import "ModelProtocol.h"
 
-@interface DatasourceModel : NSObject
+@interface Datasource : NSObject
 
 - (NSInteger)count;
 - (id)objectAtIndex:(NSInteger)index;
-- (void)addToDatasource:(id)addition;
+- (void)addToDatasource:(id<ModelProtocol>)addition;
 
 @end
