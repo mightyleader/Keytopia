@@ -59,7 +59,7 @@
 + (NSArray *)generateRandomData
 {
   NSMutableArray *mutableData = [NSMutableArray array];
-  for (NSInteger i = 0; i <= 100; i++)
+  for (NSInteger i = 0; i <= 21; i++)
     {
     id<ModelProtocol> thingToAddToArray;
     
