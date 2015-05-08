@@ -8,7 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		D43CBA1E1AFB58A100644E7A /* AccessoryInputView.m in Sources */ = {isa = PBXBuildFile; fileRef = D43CBA1D1AFB58A100644E7A /* AccessoryInputView.m */; };
-		D43CBA211AFBD9D800644E7A /* DatasourceModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D43CBA201AFBD9D800644E7A /* DatasourceModel.m */; };
+		D43CBA211AFBD9D800644E7A /* Datasource.m in Sources */ = {isa = PBXBuildFile; fileRef = D43CBA201AFBD9D800644E7A /* Datasource.m */; };
+		D43CBA251AFC9C3000644E7A /* ModelMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = D43CBA241AFC9C3000644E7A /* ModelMessage.m */; };
+		D43CBA281AFC9C4E00644E7A /* ModelStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = D43CBA271AFC9C4E00644E7A /* ModelStatus.m */; };
+		D43CBA2B1AFC9C6B00644E7A /* Parser.m in Sources */ = {isa = PBXBuildFile; fileRef = D43CBA2A1AFC9C6B00644E7A /* Parser.m */; };
+		D43CBA2C1AFC9C6B00644E7A /* Parser.m in Sources */ = {isa = PBXBuildFile; fileRef = D43CBA2A1AFC9C6B00644E7A /* Parser.m */; };
 		D4D7E4991AF9433600A25168 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D4D7E4981AF9433600A25168 /* main.m */; };
 		D4D7E49C1AF9433600A25168 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D4D7E49B1AF9433600A25168 /* AppDelegate.m */; };
 		D4D7E49F1AF9433600A25168 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D4D7E49E1AF9433600A25168 /* ViewController.m */; };
@@ -31,8 +35,15 @@
 /* Begin PBXFileReference section */
 		D43CBA1C1AFB58A100644E7A /* AccessoryInputView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccessoryInputView.h; sourceTree = "<group>"; };
 		D43CBA1D1AFB58A100644E7A /* AccessoryInputView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccessoryInputView.m; sourceTree = "<group>"; };
-		D43CBA1F1AFBD9D800644E7A /* DatasourceModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DatasourceModel.h; sourceTree = "<group>"; };
-		D43CBA201AFBD9D800644E7A /* DatasourceModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DatasourceModel.m; sourceTree = "<group>"; };
+		D43CBA1F1AFBD9D800644E7A /* Datasource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Datasource.h; sourceTree = "<group>"; };
+		D43CBA201AFBD9D800644E7A /* Datasource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Datasource.m; sourceTree = "<group>"; };
+		D43CBA231AFC9C3000644E7A /* ModelMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModelMessage.h; sourceTree = "<group>"; };
+		D43CBA241AFC9C3000644E7A /* ModelMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModelMessage.m; sourceTree = "<group>"; };
+		D43CBA261AFC9C4E00644E7A /* ModelStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModelStatus.h; sourceTree = "<group>"; };
+		D43CBA271AFC9C4E00644E7A /* ModelStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModelStatus.m; sourceTree = "<group>"; };
+		D43CBA291AFC9C6B00644E7A /* Parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Parser.h; sourceTree = "<group>"; };
+		D43CBA2A1AFC9C6B00644E7A /* Parser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Parser.m; sourceTree = "<group>"; };
+		D43CBA301AFCE47400644E7A /* ModelProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModelProtocol.h; sourceTree = "<group>"; };
 		D4D7E4931AF9433600A25168 /* Keytopia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Keytopia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4D7E4971AF9433600A25168 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D4D7E4981AF9433600A25168 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -66,6 +77,46 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D43CBA221AFC9C1500644E7A /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				D43CBA301AFCE47400644E7A /* ModelProtocol.h */,
+				D43CBA231AFC9C3000644E7A /* ModelMessage.h */,
+				D43CBA241AFC9C3000644E7A /* ModelMessage.m */,
+				D43CBA261AFC9C4E00644E7A /* ModelStatus.h */,
+				D43CBA271AFC9C4E00644E7A /* ModelStatus.m */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		D43CBA2D1AFC9C7800644E7A /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				D43CBA1F1AFBD9D800644E7A /* Datasource.h */,
+				D43CBA201AFBD9D800644E7A /* Datasource.m */,
+				D43CBA291AFC9C6B00644E7A /* Parser.h */,
+				D43CBA2A1AFC9C6B00644E7A /* Parser.m */,
+			);
+			name = Data;
+			sourceTree = "<group>";
+		};
+		D43CBA2E1AFC9C9B00644E7A /* Assets & Interface */ = {
+			isa = PBXGroup;
+			children = (
+				D4D7E4A01AF9433600A25168 /* Main.storyboard */,
+				D4D7E4A31AF9433600A25168 /* Images.xcassets */,
+				D4D7E4A51AF9433600A25168 /* LaunchScreen.xib */,
+			);
+			name = "Assets & Interface";
+			sourceTree = "<group>";
+		};
+		D43CBA2F1AFC9D4E00644E7A /* Persistence */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Persistence;
+			sourceTree = "<group>";
+		};
 		D4D7E48A1AF9433600A25168 = {
 			isa = PBXGroup;
 			children = (
@@ -87,17 +138,16 @@
 		D4D7E4951AF9433600A25168 /* Keytopia */ = {
 			isa = PBXGroup;
 			children = (
+				D43CBA2E1AFC9C9B00644E7A /* Assets & Interface */,
+				D43CBA2F1AFC9D4E00644E7A /* Persistence */,
+				D43CBA2D1AFC9C7800644E7A /* Data */,
+				D43CBA221AFC9C1500644E7A /* Models */,
 				D4D7E49A1AF9433600A25168 /* AppDelegate.h */,
 				D4D7E49B1AF9433600A25168 /* AppDelegate.m */,
-				D43CBA1F1AFBD9D800644E7A /* DatasourceModel.h */,
-				D43CBA201AFBD9D800644E7A /* DatasourceModel.m */,
 				D4D7E49D1AF9433600A25168 /* ViewController.h */,
 				D4D7E49E1AF9433600A25168 /* ViewController.m */,
 				D43CBA1C1AFB58A100644E7A /* AccessoryInputView.h */,
 				D43CBA1D1AFB58A100644E7A /* AccessoryInputView.m */,
-				D4D7E4A01AF9433600A25168 /* Main.storyboard */,
-				D4D7E4A31AF9433600A25168 /* Images.xcassets */,
-				D4D7E4A51AF9433600A25168 /* LaunchScreen.xib */,
 				D4D7E4961AF9433600A25168 /* Supporting Files */,
 			);
 			path = Keytopia;
@@ -229,10 +279,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D43CBA2B1AFC9C6B00644E7A /* Parser.m in Sources */,
 				D4D7E49F1AF9433600A25168 /* ViewController.m in Sources */,
+				D43CBA281AFC9C4E00644E7A /* ModelStatus.m in Sources */,
 				D4D7E49C1AF9433600A25168 /* AppDelegate.m in Sources */,
 				D43CBA1E1AFB58A100644E7A /* AccessoryInputView.m in Sources */,
-				D43CBA211AFBD9D800644E7A /* DatasourceModel.m in Sources */,
+				D43CBA251AFC9C3000644E7A /* ModelMessage.m in Sources */,
+				D43CBA211AFBD9D800644E7A /* Datasource.m in Sources */,
 				D4D7E4991AF9433600A25168 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -241,6 +294,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D43CBA2C1AFC9C6B00644E7A /* Parser.m in Sources */,
 				D4D7E4B31AF9433600A25168 /* KeytopiaTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
