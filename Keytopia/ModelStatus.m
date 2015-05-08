@@ -26,4 +26,30 @@
   return self;
 }
 
+- (BOOL) isEqual:(id)object
+{
+  if (![object isKindOfClass:[self class]])
+    {
+    return NO;
+    }
+  else
+    {
+    ModelStatus *objectToTest = object;
+    
+    BOOL messageMatch = [objectToTest.message isEqualToString:_message];
+    
+    if (messageMatch)
+      {
+      return YES;
+      }
+    
+    return NO;
+    }
+}
+
+- (NSUInteger)hash
+{
+  return _message.hash;
+}
+
 @end
