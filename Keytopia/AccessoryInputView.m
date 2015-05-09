@@ -90,21 +90,22 @@
   
   OptionButton *button;
   NSInteger count = optionButtonImageNames.count;
-  CGFloat width   = CGRectGetWidth(self.frame) / count;
+  CGFloat width   = (CGRectGetWidth(self.frame) - 39.0f) / count;
   CGFloat height  = CGRectGetHeight(self.frame);
-  CGFloat maxX    = CGRectGetMaxX(self.frame);
+  CGFloat maxX    = (CGRectGetWidth(self.frame) - 39.0f);
   
   for (NSInteger i = 0; i < count; i++)
   {
     UIImage *image = [UIImage imageNamed:optionButtonImageNames[i]];
-    button = [[OptionButton alloc] initWithFrame:CGRectMake((maxX - (width * (i + 1))), 0, width, height)
+    button = [[OptionButton alloc] initWithFrame:CGRectMake((maxX - (width * (i + 1))),
+                                                            CGRectGetHeight(self.frame),
+                                                            width, height)
                                         andImage:image
                                        tintColor:[UIColor whiteColor]
-                                 backgroundColor:[UIColor blackColor]];
+                                 backgroundColor:[UIColor darkGrayColor]];
     [button setAlpha:0.0f];
     [optionButtons addObject:button];
     [self addSubview:button];
-    [self sendSubviewToBack:button];
   }
   
   _optionButtons = [NSArray arrayWithArray:optionButtons];
@@ -139,7 +140,7 @@
 {
   for (OptionButton *button in _optionButtons) {
     CGRect frame = button.frame;
-    frame.origin.y = _presenting ? 0 : (-1 * frame.size.height);
+    frame.origin.y = _presenting ? CGRectGetHeight(self.frame) : 0;
     [UIView animateWithDuration:0.3
                           delay:0.2
          usingSpringWithDamping:0.4
