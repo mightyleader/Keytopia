@@ -13,4 +13,8 @@
 @property (nonatomic, readonly) UITextField *textfield;
 @property (nonatomic, readonly) UIButton    *optionsButton;
 
+- (instancetype)initWithFrame:(CGRect)frame
+               inputViewStyle:(UIInputViewStyle)inputViewStyle
+                  placeholder:(BOOL)placeholder;
+
 @end
