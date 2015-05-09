@@ -122,18 +122,22 @@
 {
   CGRect realFrame = CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 44.0f);
   CGRect fauxFrame = CGRectMake(0, CGRectGetHeight(self.view.frame) - 44.0f, CGRectGetWidth(self.view.frame), 44.0f);
-  _accessoryInputView = [[self class] accessoryInputViewWithFrame:realFrame];
-  _fauxAccessoryInputView = [[self class] accessoryInputViewWithFrame:fauxFrame];
+  
+  _accessoryInputView     = [[self class] accessoryInputViewWithFrame:realFrame
+                                                     actAsPlaceholder:NO];
+  _fauxAccessoryInputView = [[self class] accessoryInputViewWithFrame:fauxFrame
+                                                     actAsPlaceholder:YES];
   
   [self.view addSubview:_fauxAccessoryInputView];
   [self.view bringSubviewToFront:_fauxAccessoryInputView];
+  
   [_fauxAccessoryInputView.textfield setInputAccessoryView:_accessoryInputView];
   [_fauxAccessoryInputView.textfield becomeFirstResponder];
   
   [_accessoryInputView.textfield setDelegate:self];
-  [_accessoryInputView.optionsButton addTarget:self
-                                        action:@selector(optionButtonTapped:)
-                              forControlEvents:UIControlEventTouchUpInside];
+//  [_accessoryInputView.optionsButton addTarget:self
+//                                        action:@selector(optionButtonTapped:)
+//                              forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (void)setTableViewInsets:(UIEdgeInsets)edgeInsets
@@ -207,12 +211,6 @@
 - (void)optionButtonTapped:(id)sender
 {
   // TODO: Replace with real thing
-  UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Select an option"
-                                                  message:@"Choose an thing to send in the chat"
-                                                 delegate:nil
-                                        cancelButtonTitle:@"Cancel"
-                                        otherButtonTitles:@"Photo", @"File", @"Cat GIF", nil];
-  [alert show];
 }
 
 
@@ -275,15 +273,26 @@
 
 #pragma mark - Accessory Input View
 
-+ (AccessoryInputView *)accessoryInputViewWithFrame:(CGRect)frame
++ (AccessoryInputView *)accessoryInputViewWithFrame:(CGRect)frame actAsPlaceholder:(BOOL)placeholder
 {
   AccessoryInputView *inputView = [[AccessoryInputView alloc] initWithFrame:frame
-                                               inputViewStyle:UIInputViewStyleKeyboard];
+                                                             inputViewStyle:UIInputViewStyleKeyboard
+                                                                placeholder:placeholder];
   return inputView;
 }
 
 
 #pragma mark - Textfield Delegate
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+  // When the keyboard hides, duplicate the text in the real input view to the faux input view
+  NSString *remainingText = textField.text;
+  NSUInteger remainingTextLength = remainingText.length;
+  if (remainingTextLength > 0) {
+    _fauxAccessoryInputView.textfield.text = remainingText;
+  }
+}
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
