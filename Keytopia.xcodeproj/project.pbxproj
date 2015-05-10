@@ -15,6 +15,8 @@
 		D43CBA2C1AFC9C6B00644E7A /* Parser.m in Sources */ = {isa = PBXBuildFile; fileRef = D43CBA2A1AFC9C6B00644E7A /* Parser.m */; };
 		D43CBA341AFE0D0500644E7A /* OptionButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D43CBA331AFE0D0500644E7A /* OptionButton.m */; };
 		D43CBA351AFE0D0500644E7A /* OptionButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D43CBA331AFE0D0500644E7A /* OptionButton.m */; };
+		D43CBA391AFF75E100644E7A /* PhotoLibraryCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = D43CBA381AFF75E100644E7A /* PhotoLibraryCollection.m */; };
+		D43CBA3A1AFF75E100644E7A /* PhotoLibraryCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = D43CBA381AFF75E100644E7A /* PhotoLibraryCollection.m */; };
 		D4D7E4991AF9433600A25168 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D4D7E4981AF9433600A25168 /* main.m */; };
 		D4D7E49C1AF9433600A25168 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D4D7E49B1AF9433600A25168 /* AppDelegate.m */; };
 		D4D7E49F1AF9433600A25168 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D4D7E49E1AF9433600A25168 /* ViewController.m */; };
@@ -48,6 +50,8 @@
 		D43CBA301AFCE47400644E7A /* ModelProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModelProtocol.h; sourceTree = "<group>"; };
 		D43CBA321AFE0D0500644E7A /* OptionButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OptionButton.h; sourceTree = "<group>"; };
 		D43CBA331AFE0D0500644E7A /* OptionButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OptionButton.m; sourceTree = "<group>"; };
+		D43CBA371AFF75E100644E7A /* PhotoLibraryCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoLibraryCollection.h; sourceTree = "<group>"; };
+		D43CBA381AFF75E100644E7A /* PhotoLibraryCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoLibraryCollection.m; sourceTree = "<group>"; };
 		D4D7E4931AF9433600A25168 /* Keytopia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Keytopia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4D7E4971AF9433600A25168 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D4D7E4981AF9433600A25168 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -132,6 +136,15 @@
 			name = InputView;
 			sourceTree = "<group>";
 		};
+		D43CBA361AFF75A800644E7A /* Options */ = {
+			isa = PBXGroup;
+			children = (
+				D43CBA371AFF75E100644E7A /* PhotoLibraryCollection.h */,
+				D43CBA381AFF75E100644E7A /* PhotoLibraryCollection.m */,
+			);
+			name = Options;
+			sourceTree = "<group>";
+		};
 		D4D7E48A1AF9433600A25168 = {
 			isa = PBXGroup;
 			children = (
@@ -153,6 +166,7 @@
 		D4D7E4951AF9433600A25168 /* Keytopia */ = {
 			isa = PBXGroup;
 			children = (
+				D43CBA361AFF75A800644E7A /* Options */,
 				D43CBA311AFE0B0300644E7A /* InputView */,
 				D43CBA2F1AFC9D4E00644E7A /* Persistence */,
 				D43CBA2D1AFC9C7800644E7A /* Data */,
@@ -299,6 +313,7 @@
 				D4D7E49C1AF9433600A25168 /* AppDelegate.m in Sources */,
 				D43CBA1E1AFB58A100644E7A /* AccessoryInputView.m in Sources */,
 				D43CBA341AFE0D0500644E7A /* OptionButton.m in Sources */,
+				D43CBA391AFF75E100644E7A /* PhotoLibraryCollection.m in Sources */,
 				D43CBA251AFC9C3000644E7A /* ModelMessage.m in Sources */,
 				D43CBA211AFBD9D800644E7A /* Datasource.m in Sources */,
 				D4D7E4991AF9433600A25168 /* main.m in Sources */,
@@ -311,6 +326,7 @@
 			files = (
 				D43CBA2C1AFC9C6B00644E7A /* Parser.m in Sources */,
 				D4D7E4B31AF9433600A25168 /* KeytopiaTests.m in Sources */,
+				D43CBA3A1AFF75E100644E7A /* PhotoLibraryCollection.m in Sources */,
 				D43CBA351AFE0D0500644E7A /* OptionButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
