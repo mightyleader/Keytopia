@@ -110,7 +110,7 @@
 }
 
 /**
- *  Create the two accessory input view. 
+ *  Create the two accessory input views.
  *  A fake one which attaches to the bottom of the view permantely which triggers the keyboard to show when it's hidden
  *  and hides when the keyboard shows.
  *  The main one which we inset as the actual input accessory view of the text field in the fake one to make it appear above
@@ -135,9 +135,6 @@
   [_fauxAccessoryInputView.textfield becomeFirstResponder];
   
   [_accessoryInputView.textfield setDelegate:self];
-//  [_accessoryInputView.optionsButton addTarget:self
-//                                        action:@selector(optionButtonTapped:)
-//                              forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (void)setTableViewInsets:(UIEdgeInsets)edgeInsets
@@ -176,7 +173,7 @@
   UIColor *textColour;
   UIFont  *textFont;
   
-  [cell.textLabel.layer setCornerRadius:10.0];
+  [cell.textLabel.layer setCornerRadius:20.0f];
   [cell.textLabel.layer setMasksToBounds:YES];
   [cell.textLabel setNumberOfLines:0];
   [cell.textLabel setLineBreakMode:NSLineBreakByWordWrapping];
@@ -186,7 +183,7 @@
     textColour = [UIColor whiteColor];
     textFont = [UIFont systemFontOfSize:14.0];
     cell.detailTextLabel.text = [[(ModelMessage *)object datePosted] description];
-    cell.textLabel.backgroundColor = [UIColor orangeColor];
+    cell.textLabel.backgroundColor = [UIColor colorWithRed:0.665 green:0.335 blue:0.006 alpha:0.820];
   }
   
   if ([object isKindOfClass:[ModelStatus class]]) {
@@ -254,6 +251,7 @@
   //somehow scroll to the bottom of the list
   [self scrollToLatestEntryAnimated:YES];
 }
+
 
 - (void)keyboardWillHide:(NSNotification *)notification
 {

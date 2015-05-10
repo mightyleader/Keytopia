@@ -142,7 +142,7 @@
     CGRect frame = button.frame;
     frame.origin.y = _presenting ? CGRectGetHeight(self.frame) : 0;
     [UIView animateWithDuration:0.3
-                          delay:0.2
+                          delay:0.0
          usingSpringWithDamping:0.4
           initialSpringVelocity:0.4
                         options:UIViewAnimationOptionCurveEaseInOut
