@@ -14,7 +14,6 @@
 
 @import QuartzCore;
 
-
 #define kAccessoryInputViewHeight 44.0f
 #define kTableViewTopInset 20.0f
 
@@ -47,6 +46,7 @@
   [self setupNotifications];
   [self setupTableview];
   [self setupAccessoryInputViews];
+  self.title = @"Keytopia";
 }
 
 /**
@@ -131,6 +131,9 @@
   [self.view addSubview:_fauxAccessoryInputView];
   [self.view bringSubviewToFront:_fauxAccessoryInputView];
   
+  [_fauxAccessoryInputView setPhotoHandler:[self photoAction]];
+  [_accessoryInputView setPhotoHandler:[self photoAction]];
+  
   [_fauxAccessoryInputView.textfield setInputAccessoryView:_accessoryInputView];
   [_fauxAccessoryInputView.textfield becomeFirstResponder];
   
@@ -183,7 +186,7 @@
     textColour = [UIColor whiteColor];
     textFont = [UIFont systemFontOfSize:14.0];
     cell.detailTextLabel.text = [[(ModelMessage *)object datePosted] description];
-    cell.textLabel.backgroundColor = [UIColor colorWithRed:0.665 green:0.335 blue:0.006 alpha:0.820];
+    cell.textLabel.backgroundColor = [UIColor blackColor];
   }
   
   if ([object isKindOfClass:[ModelStatus class]]) {
@@ -198,17 +201,67 @@
   cell.textLabel.textColor = textColour;
   cell.textLabel.font = textFont;
   
-  
   return cell;
 }
 
 
-#pragma mark - Button action
+#pragma mark - Button actions
 
-- (void)optionButtonTapped:(id)sender
+- (AccessoryInputViewOptionSelectHandler)photoAction
 {
-  // TODO: Replace with real thing
+  __weak typeof(self) weakSelf = self;
+  
+  return ^() {
+    typeof(self) strongSelf = weakSelf;
+    if ( !strongSelf ) { return; }
+    // Present a Photos collection view
+  };
 }
+
+- (AccessoryInputViewOptionSelectHandler)cameraAction
+{
+  __weak typeof(self) weakSelf = self;
+  
+  return ^() {
+    typeof(self) strongSelf = weakSelf;
+    if ( !strongSelf ) { return; }
+
+  };
+}
+
+- (AccessoryInputViewOptionSelectHandler)audioAction
+{
+  __weak typeof(self) weakSelf = self;
+  
+  return ^() {
+    typeof(self) strongSelf = weakSelf;
+    if ( !strongSelf ) { return; }
+
+  };
+}
+
+- (AccessoryInputViewOptionSelectHandler)pdfAction
+{
+  __weak typeof(self) weakSelf = self;
+  
+  return ^() {
+    typeof(self) strongSelf = weakSelf;
+    if ( !strongSelf ) { return; }
+
+  };
+}
+
+- (AccessoryInputViewOptionSelectHandler)vcardAction
+{
+  __weak typeof(self) weakSelf = self;
+  
+  return ^() {
+    typeof(self) strongSelf = weakSelf;
+    if ( !strongSelf ) { return; }
+
+  };
+}
+
 
 
 #pragma mark - Scroll to position

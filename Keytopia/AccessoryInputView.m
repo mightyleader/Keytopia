@@ -67,8 +67,7 @@
   
   [_optionsButton setTintColor:[UIColor whiteColor]];
   
-  UIImage *paperclip = [UIImage imageNamed:@"paperclip"];
-  [_optionsButton setImage:paperclip forState:UIControlStateNormal];
+  [self changeOptionsButtonImage:NO];
   
   [_optionsButton addTarget:self
                      action:@selector(toggleOptions:)
@@ -103,6 +102,10 @@
                                         andImage:image
                                        tintColor:[UIColor whiteColor]
                                  backgroundColor:[UIColor darkGrayColor]];
+    [button setTag:i];
+    [button addTarget:self
+               action:@selector(handleOptionBlockForButton:)
+     forControlEvents:UIControlEventTouchUpInside];
     [button setAlpha:0.0f];
     [optionButtons addObject:button];
     [self addSubview:button];
@@ -150,9 +153,46 @@
    ^{
      [button setAlpha:!_presenting];
      [button setFrame:frame];
+     [self changeOptionsButtonImage:!_presenting];
     } completion:nil];
   }
   _presenting = !_presenting;
+}
+
+- (void)changeOptionsButtonImage:(BOOL)presenting
+{
+  UIImage *image = [UIImage imageNamed:@"paperclip"];
+  if (presenting) {
+    image = [UIImage imageNamed:@"CloseButton"];
+  }
+  
+  [_optionsButton setImage:image forState:UIControlStateNormal];
+}
+
+- (void)handleOptionBlockForButton:(id)sender
+{
+  AccessoryInputOption chosenOption = [sender tag];
+  
+  switch (chosenOption) {
+    case AccessoryInputOptionCamera:
+      self.cameraHandler();
+      break;
+    case AccessoryInputOptionPhotoLibrary:
+      self.photoHandler();
+      break;
+    case AccessoryInputOptionAudioRecord:
+      self.audioHandler();
+      break;
+    case AccessoryInputOptionPDFMe:
+      self.pdfHandler();
+      break;
+    case AccessoryInputOptionVCard:
+      self.vcardHandler();
+      break;
+    default:
+      return;
+      break;
+  }
 }
 
 
