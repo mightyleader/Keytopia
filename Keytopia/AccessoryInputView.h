@@ -20,7 +20,7 @@ typedef enum : NSUInteger {
 } AccessoryInputOption;
 
 // simple block definition, no paramters no return
-typedef void(^AccessoryInputViewOptionSelectHandler)();
+typedef void(^AccessoryInputViewOptionSelectHandler)(BOOL);
 
 @interface AccessoryInputView : UIInputView
 

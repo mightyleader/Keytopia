@@ -49,6 +49,8 @@
   _textfield = [[UITextField alloc] initWithFrame:CGRectZero];
   _optionsButton = [UIButton buttonWithType:UIButtonTypeCustom];
   
+  [self.layer setMasksToBounds:YES];
+  
   // auto layout
   [_textfield setTranslatesAutoresizingMaskIntoConstraints:NO];
   [_optionsButton setTranslatesAutoresizingMaskIntoConstraints:NO];
@@ -175,23 +177,23 @@
   
   switch (chosenOption) {
     case AccessoryInputOptionCamera:
-      self.cameraHandler();
+      self.cameraHandler(YES); // add nil tests to these
       break;
     case AccessoryInputOptionPhotoLibrary:
-      self.photoHandler();
+      self.photoHandler(YES);
       break;
     case AccessoryInputOptionAudioRecord:
-      self.audioHandler();
+      self.audioHandler(YES);
       break;
     case AccessoryInputOptionPDFMe:
-      self.pdfHandler();
+      self.pdfHandler(YES);
       break;
     case AccessoryInputOptionVCard:
-      self.vcardHandler();
+      self.vcardHandler(YES);
       break;
     default:
       return;
-      break;
+      break; 
   }
 }
 
