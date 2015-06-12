@@ -17,6 +17,7 @@
 		D43CBA351AFE0D0500644E7A /* OptionButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D43CBA331AFE0D0500644E7A /* OptionButton.m */; };
 		D43CBA391AFF75E100644E7A /* PhotoLibraryCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = D43CBA381AFF75E100644E7A /* PhotoLibraryCollection.m */; };
 		D43CBA3A1AFF75E100644E7A /* PhotoLibraryCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = D43CBA381AFF75E100644E7A /* PhotoLibraryCollection.m */; };
+		D4BF21861B1B1FE2001B7AB8 /* CameraInputViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D4BF21851B1B1FE2001B7AB8 /* CameraInputViewController.m */; };
 		D4D7E4991AF9433600A25168 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D4D7E4981AF9433600A25168 /* main.m */; };
 		D4D7E49C1AF9433600A25168 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D4D7E49B1AF9433600A25168 /* AppDelegate.m */; };
 		D4D7E49F1AF9433600A25168 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D4D7E49E1AF9433600A25168 /* ViewController.m */; };
@@ -52,6 +53,8 @@
 		D43CBA331AFE0D0500644E7A /* OptionButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OptionButton.m; sourceTree = "<group>"; };
 		D43CBA371AFF75E100644E7A /* PhotoLibraryCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoLibraryCollection.h; sourceTree = "<group>"; };
 		D43CBA381AFF75E100644E7A /* PhotoLibraryCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoLibraryCollection.m; sourceTree = "<group>"; };
+		D4BF21841B1B1FE2001B7AB8 /* CameraInputViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraInputViewController.h; sourceTree = "<group>"; };
+		D4BF21851B1B1FE2001B7AB8 /* CameraInputViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraInputViewController.m; sourceTree = "<group>"; };
 		D4D7E4931AF9433600A25168 /* Keytopia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Keytopia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4D7E4971AF9433600A25168 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D4D7E4981AF9433600A25168 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -132,6 +135,8 @@
 				D43CBA1D1AFB58A100644E7A /* AccessoryInputView.m */,
 				D43CBA321AFE0D0500644E7A /* OptionButton.h */,
 				D43CBA331AFE0D0500644E7A /* OptionButton.m */,
+				D4BF21841B1B1FE2001B7AB8 /* CameraInputViewController.h */,
+				D4BF21851B1B1FE2001B7AB8 /* CameraInputViewController.m */,
 			);
 			name = InputView;
 			sourceTree = "<group>";
@@ -311,6 +316,7 @@
 				D4D7E49F1AF9433600A25168 /* ViewController.m in Sources */,
 				D43CBA281AFC9C4E00644E7A /* ModelStatus.m in Sources */,
 				D4D7E49C1AF9433600A25168 /* AppDelegate.m in Sources */,
+				D4BF21861B1B1FE2001B7AB8 /* CameraInputViewController.m in Sources */,
 				D43CBA1E1AFB58A100644E7A /* AccessoryInputView.m in Sources */,
 				D43CBA341AFE0D0500644E7A /* OptionButton.m in Sources */,
 				D43CBA391AFF75E100644E7A /* PhotoLibraryCollection.m in Sources */,

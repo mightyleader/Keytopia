@@ -24,9 +24,6 @@
 @property (nonatomic) AccessoryInputView *fauxAccessoryInputView;
 @property (nonatomic) AccessoryInputView *accessoryInputView;
 
-@property (nonatomic) UICollectionViewFlowLayout *flow;
-@property (nonatomic) UICollectionView *collectionView;
-
 @end
 
 @implementation ViewController
@@ -50,7 +47,6 @@
   [self setupNotifications];
   [self setupTableview];
   [self setupAccessoryInputViews];
-  [self setupOptionalContentViews];
   self.title = @"Keytopia";
 }
 
@@ -133,6 +129,9 @@
   _fauxAccessoryInputView = [[self class] accessoryInputViewWithFrame:fauxFrame
                                                      actAsPlaceholder:YES];
   
+  NSLayoutConstraint *constraint = [[self.inputAccessoryView constraints] objectAtIndex:0];
+  constraint.constant = 44.0f;
+  
   [self.view addSubview:_fauxAccessoryInputView];
   [self.view bringSubviewToFront:_fauxAccessoryInputView];
   
@@ -150,15 +149,6 @@
 {
   [_tableview setContentInset:edgeInsets];
   [_tableview setScrollIndicatorInsets:edgeInsets];
-}
-
-
-
-- (void)setupOptionalContentViews
-{
-  _flow = [[UICollectionViewFlowLayout alloc] init];
-  _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.view.frame), 120)
-                                       collectionViewLayout:_flow];
 }
 
 
@@ -201,7 +191,7 @@
     textColour = [UIColor whiteColor];
     textFont = [UIFont systemFontOfSize:14.0];
     cell.detailTextLabel.text = [[(ModelMessage *)object datePosted] description];
-    cell.textLabel.backgroundColor = [UIColor blackColor];
+    cell.textLabel.backgroundColor = [UIColor colorWithRed:1.000 green:0.502 blue:0.000 alpha:1.000];
   }
   
   if ([object isKindOfClass:[ModelStatus class]]) {
@@ -229,35 +219,8 @@
   return ^(BOOL show) {
     typeof(self) strongSelf = weakSelf;
     if ( !strongSelf ) { return; }
-    // Present a Photos collection view
-    UIEdgeInsets insets = strongSelf.tableview.contentInset;
-    UIEdgeInsets scrollinsets = strongSelf.tableview.scrollIndicatorInsets;
-    insets.bottom += _collectionView.frame.size.height;
-    scrollinsets.bottom += _collectionView.frame.size.height;
-    strongSelf.tableview.contentInset = insets;
-    strongSelf.tableview.scrollIndicatorInsets = scrollinsets;
-    [strongSelf scrollToLatestEntryAnimated:YES];
     
-    BOOL insubviews = [[self.view subviews] containsObject:_collectionView];
-    CGRect collectionViewFrame = CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 120);
-    CGRect newSelfFrame = CGRectMake(0.0f, 0.0f,
-                                     CGRectGetWidth(self.view.frame),
-                                     CGRectGetHeight(self.view.frame) + collectionViewFrame.size.height);
-    if (!insubviews) {
-      [_flow setScrollDirection:UICollectionViewScrollDirectionHorizontal];
-      [_flow setItemSize:CGSizeMake(100, 100)];
-      [_collectionView setFrame:collectionViewFrame];
-      _collectionView.contentSize = collectionViewFrame.size;
-      self.view.frame = newSelfFrame;
-      [self.view addSubview:_collectionView];
-    }
-    
-    //  NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-    
-    //  [_collectionView scrollToItemAtIndexPath:indexPath
-    //                                 atScrollPosition:UICollectionViewScrollPositionLeft
-    //                                         animated:YES];
-  };
+    };
 }
 
 - (AccessoryInputViewOptionSelectHandler)cameraAction

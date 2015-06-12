@@ -52,6 +52,7 @@ static CGSize AssetGridThumbnailSize;
 
 - (void)setupCollectionView
 {
+  [self.collectionView setBackgroundColor:[UIColor colorWithWhite:1.0 alpha:0.8]];
   [self.collectionView setDataSource:self];
   [self.collectionView setDelegate:self];
   [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"Cell"];
