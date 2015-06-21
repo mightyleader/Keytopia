@@ -46,27 +46,42 @@
   self = [super initWithFrame:frame
                inputViewStyle:inputViewStyle];
   if (self)
-    {
+  {
     _placeholder = placeholder;
+    [self setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self setupSubviews];
     [self setupOptionButtons];
-    }
+//    [self setupConstraints];
+    [self debugViewSettings];
+  }
   return self;
 }
 
 
 #pragma mark - Private layout methods
 
+- (void)debugViewSettings
+{
+  [self setBackgroundColor:[[UIColor yellowColor] colorWithAlphaComponent:0.5]];
+  [_textfield setBackgroundColor:[[UIColor cyanColor] colorWithAlphaComponent:0.5]];
+  [_optionsButton setBackgroundColor:[[UIColor orangeColor] colorWithAlphaComponent:0.5]];
+  [_containingView setBackgroundColor:[[UIColor purpleColor] colorWithAlphaComponent:0.3]];
+}
+
 - (void)setupSubviews
 {
+  
+  
   // init subviews
-  _textfield      = [[UITextField alloc] initWithFrame:CGRectZero];
+  CGFloat width = CGRectGetWidth(self.frame);
+  _textfield      = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, width - 44, 44)];
   _optionsButton  = [UIButton buttonWithType:UIButtonTypeCustom];
-  _containingView = [[UIView alloc] initWithFrame:CGRectZero];
+  [_optionsButton setFrame:CGRectMake(width - 44, 0, 44, 44)];
+  _containingView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, width, 44)];
   
   // auto layout
-  [_textfield setTranslatesAutoresizingMaskIntoConstraints:NO];
-  [_optionsButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+//  [_textfield setTranslatesAutoresizingMaskIntoConstraints:NO];
+//  [_optionsButton setTranslatesAutoresizingMaskIntoConstraints:NO];
   [_containingView setTranslatesAutoresizingMaskIntoConstraints:NO];
   
   [_containingView addSubview:_textfield];
@@ -76,11 +91,21 @@
   // configure text input and button
   [_textfield setKeyboardAppearance:UIKeyboardAppearanceLight];
   [_textfield setReturnKeyType:UIReturnKeySend];
-  [_textfield setTintColor:[UIColor colorWithRed:1.000 green:0.502 blue:0.000 alpha:1.000]];
-  [_textfield setTextColor:[UIColor colorWithWhite:0.200 alpha:1.000]];
+  [_textfield setTintColor:[UIColor colorWithRed:1.000
+                                           green:0.502
+                                            blue:0.000
+                                           alpha:1.000]];
+  
+  [_textfield setTextColor:[UIColor colorWithWhite:0.200
+                                             alpha:1.000]];
+  
   [_textfield.layer setCornerRadius:5.0f];
-  [_textfield setBackgroundColor:[UIColor colorWithWhite:0.8 alpha:0.0]];
+  [_textfield setBackgroundColor:[UIColor colorWithWhite:0.8
+                                                   alpha:0.0]];
+  
   [_textfield setClearButtonMode:UITextFieldViewModeWhileEditing];
+  
+  [_textfield setPlaceholder:NSLocalizedString(@"type your message here", nil)];
   
   UIImage *messageIcon = [UIImage imageNamed:@"Message"];
   UIImageView *leftIcon = [[UIImageView alloc] initWithImage:messageIcon];
@@ -145,7 +170,7 @@
   _presenting = NO;
 }
 
-- (void)updateConstraints
+- (void)setupConstraints
 {
   if (!_textentryConstraints || !_containerConstraints) {
     NSDictionary *constrained = NSDictionaryOfVariableBindings(_optionsButton, _textfield, _containingView);
@@ -165,36 +190,36 @@
     // text entry
     _textentryConstraints = [NSMutableArray array];
     
-    [_textentryConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-6-[_textfield]-6-[_optionsButton(==32)]-6-|"
-                                                                                       options:kNilOptions
-                                                                                       metrics:nil
-                                                                                         views:constrained]];
-    [_textentryConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_textfield(==32)]-6-|"
-                                                                                       options:kNilOptions
-                                                                                       metrics:nil
-                                                                                         views:constrained]];
-    [_textentryConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_optionsButton(==32)]-6-|"
-                                                                                       options:kNilOptions
-                                                                                       metrics:nil
-                                                                                         views:constrained]];
+//    [_textentryConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-6-[_textfield]-6-[_optionsButton(==32)]-6-|"
+//                                                                                       options:kNilOptions
+//                                                                                       metrics:nil
+//                                                                                         views:constrained]];
+//    [_textentryConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_textfield(==32)]-6-|"
+//                                                                                       options:kNilOptions
+//                                                                                       metrics:nil
+//                                                                                         views:constrained]];
+//    [_textentryConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_optionsButton(==32)]-6-|"
+//                                                                                       options:kNilOptions
+//                                                                                       metrics:nil
+//                                                                                         views:constrained]];
     
   }
   
   [self addConstraints:_containerConstraints];
   [_containingView addConstraints:_textentryConstraints];
   
-  [super updateConstraints];
 }
 
-#pragma mark - Event handler
 
+#pragma mark - Event handler
 - (void)toggleOptions:(id)sender
 {
   CGRect frame    = _optionsContainer.frame;
   CGFloat startx  = CGRectGetMaxX(self.frame);
   CGFloat endx  = CGRectGetMinX(_optionsButton.frame) - CGRectGetWidth(frame);
-  frame.origin.x  = _presenting ? startx : endx;
-  [UIView animateWithDuration:0.3
+  BOOL isShowingOptions = (frame.origin.x == endx);
+  frame.origin.x  =  isShowingOptions ? startx : endx; // Move based on current position
+  [UIView animateWithDuration:0.2
                         delay:0.0
        usingSpringWithDamping:0.4
         initialSpringVelocity:0.4
@@ -203,9 +228,16 @@
    ^{
      [_optionsContainer setFrame:frame];
      [self changeOptionsButtonImage:!_presenting];
+     [_textfield setAlpha:isShowingOptions];
+     [self deselectAllButtons];
    } completion:^(BOOL finished) {
+     if (_presenting) {
+       _presenting = !_presenting;
+       [self invalidateIntrinsicContentSize];
+       
+     }
    }];
-  _presenting = !_presenting;
+  
 }
 
 
@@ -215,49 +247,45 @@
   if (presenting) {
     image = [UIImage imageNamed:@"CloseButton"];
   }
-  [_textfield setAlpha:!presenting];
   [_optionsButton setImage:image forState:UIControlStateNormal];
+}
+
+
+- (void)deselectAllButtons
+{
+  for (UIButton *button in _optionButtons) {
+    [button setBackgroundColor:[UIColor clearColor]]; // TODO: make these refer to constants
+    [button.imageView setTintColor:[UIColor blackColor]];
+  }
 }
 
 
 - (void)handleOptionBlockForButton:(id)sender
 {
+  //Switch on the button by the tag
   AccessoryInputOption chosenOption = [sender tag];
   BOOL show = YES;
+  
+  // Only change the layout bounds of self if not already changed
+  if (!_presenting) {
+    [self changeHeightConstraintToPresenting:YES];
+  }
+  
+  // Manage selection state
+  [self deselectAllButtons];
+  [sender setBackgroundColor:[UIColor blackColor]];
+  [[sender imageView] setTintColor:[UIColor whiteColor]];
+  
+  // Call any associated block code
   switch (chosenOption) {
     case AccessoryInputOptionCamera:
-    {
-    [self toggleOptions:sender];
-    [self changeHeightConstraintToPresenting:YES];
-    self.photoHandler(show);
-    }
-      break;
     case AccessoryInputOptionPhotoLibrary:
-    {
-    [self toggleOptions:sender];
-    [self changeHeightConstraintToPresenting:YES];
-    self.photoHandler(show);
-    }
-      break;
     case AccessoryInputOptionAudioRecord:
-    {
-    [self toggleOptions:sender];
-    [self changeHeightConstraintToPresenting:YES];
-    self.photoHandler(show);
-    }
-      break;
     case AccessoryInputOptionPDFMe:
-    {
-    [self toggleOptions:sender];
-    [self changeHeightConstraintToPresenting:YES];
-    self.photoHandler(show);
-    }
-      break;
     case AccessoryInputOptionVCard:
+    case AccessoryInputOptionStickers:
     {
-    [self toggleOptions:sender];
-    [self changeHeightConstraintToPresenting:YES];
-    self.photoHandler(show);
+      self.photoHandler(show);
     }
       break;
     default:
@@ -268,16 +296,22 @@
 
 - (void)changeHeightConstraintToPresenting:(BOOL)presenting
 {
-  NSInteger heightConstant = 44.0f;
-  if (presenting) {
-    heightConstant = 160.0f;
+  self.presenting = presenting;
+  [self invalidateIntrinsicContentSize];
+}
+
+- (CGSize)intrinsicContentSize
+{
+  CGSize newSize = self.bounds.size;
+  if (self.presenting)
+  {
+    newSize.height = 160.0;
   }
-  //  NSLayoutConstraint *heightConstraint = [[self constraints] firstObject];
-  //  heightConstraint.constant = heightConstant;
-  //  [self setNeedsDisplay];
-  
-  [self setFrame: CGRectMake(0, 0, 375, 160)];
-  [self setNeedsDisplay];
+  else
+  {
+    newSize.height = 44.0;
+  }
+  return newSize;
 }
 
 

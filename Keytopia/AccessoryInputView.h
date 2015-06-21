@@ -17,6 +17,7 @@ typedef enum : NSUInteger {
   AccessoryInputOptionAudioRecord,
   AccessoryInputOptionPDFMe,
   AccessoryInputOptionVCard,
+  AccessoryInputOptionStickers,
 } AccessoryInputOption;
 
 // simple block definition, no paramters no return

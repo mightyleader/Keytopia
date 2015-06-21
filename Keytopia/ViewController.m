@@ -21,7 +21,6 @@
 @interface ViewController () <UITextFieldDelegate>
 
 @property (nonatomic) Datasource *datasource;
-@property (nonatomic) AccessoryInputView *fauxAccessoryInputView;
 @property (nonatomic) AccessoryInputView *accessoryInputView;
 
 @end
@@ -59,7 +58,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
   [super viewWillAppear:animated];
-  [_fauxAccessoryInputView.textfield becomeFirstResponder];
+  [self becomeFirstResponder];
 }
 
 
@@ -76,23 +75,8 @@
   NSNotificationCenter *nCenter = [NSNotificationCenter defaultCenter];
   
   [nCenter addObserver:self
-              selector:@selector(keyboardWillShow:)
-                  name:UIKeyboardWillShowNotification
-                object:nil];
-  
-  [nCenter addObserver:self
               selector:@selector(keyboardDidShow:)
                   name:UIKeyboardDidShowNotification
-                object:nil];
-  
-  [nCenter addObserver:self
-              selector:@selector(keyboardWillHide:)
-                  name:UIKeyboardWillHideNotification
-                object:nil];
-  
-  [nCenter addObserver:self
-              selector:@selector(keyboardDidHide:)
-                  name:UIKeyboardDidHideNotification
                 object:nil];
 }
 
@@ -106,41 +90,24 @@
   [_tableview setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
   [_tableview setSeparatorColor:[UIColor clearColor]];
   
-  UIEdgeInsets tableViewInsets = UIEdgeInsetsMake(kTableViewTopInset, 0, kAccessoryInputViewHeight, 0);
+  UIEdgeInsets tableViewInsets = UIEdgeInsetsMake(kTableViewTopInset,
+                                                  0.0f,
+                                                  kAccessoryInputViewHeight,
+                                                  0.0f);
   [self setTableViewInsets:tableViewInsets];
 }
 
-/**
- *  Create the two accessory input views.
- *  A fake one which attaches to the bottom of the view permantely which triggers the keyboard to show when it's hidden
- *  and hides when the keyboard shows.
- *  The main one which we inset as the actual input accessory view of the text field in the fake one to make it appear above
- *  keyboard and actually accept text input.
- *  This main one also has this view controller as it's delegate and the target for it's button.
- *  The fake one has no delegate or button action.
- */
+
 - (void)setupAccessoryInputViews
 {
-  CGRect realFrame = CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 44.0f);
-  CGRect fauxFrame = CGRectMake(0, CGRectGetHeight(self.view.frame) - 44.0f, CGRectGetWidth(self.view.frame), 44.0f);
+  CGRect realFrame = CGRectMake(0.0f,
+                                0.0f,
+                                CGRectGetWidth(self.view.frame),
+                                44.0f);
   
-  _accessoryInputView     = [[self class] accessoryInputViewWithFrame:realFrame
-                                                     actAsPlaceholder:NO];
-  _fauxAccessoryInputView = [[self class] accessoryInputViewWithFrame:fauxFrame
-                                                     actAsPlaceholder:YES];
-  
-  NSLayoutConstraint *constraint = [[self.inputAccessoryView constraints] objectAtIndex:0];
-  constraint.constant = 44.0f;
-  
-  [self.view addSubview:_fauxAccessoryInputView];
-  [self.view bringSubviewToFront:_fauxAccessoryInputView];
-  
-  [_fauxAccessoryInputView setPhotoHandler:[self photoAction]];
+  _accessoryInputView = [[self class] accessoryInputViewWithFrame:realFrame];
+  [_accessoryInputView setTranslatesAutoresizingMaskIntoConstraints:NO];
   [_accessoryInputView setPhotoHandler:[self photoAction]];
-  
-  [_fauxAccessoryInputView.textfield setInputAccessoryView:_accessoryInputView];
-  [_fauxAccessoryInputView.textfield becomeFirstResponder];
-  
   [_accessoryInputView.textfield setDelegate:self];
 }
 
@@ -191,7 +158,10 @@
     textColour = [UIColor whiteColor];
     textFont = [UIFont systemFontOfSize:14.0];
     cell.detailTextLabel.text = [[(ModelMessage *)object datePosted] description];
-    cell.textLabel.backgroundColor = [UIColor colorWithRed:1.000 green:0.502 blue:0.000 alpha:1.000];
+    cell.textLabel.backgroundColor = [UIColor colorWithRed:1.000
+                                                     green:0.502
+                                                      blue:0.000
+                                                     alpha:1.000];
   }
   
   if ([object isKindOfClass:[ModelStatus class]]) {
@@ -286,12 +256,6 @@
 
 #pragma mark - Keyboard notifications
 
-- (void)keyboardWillShow:(NSNotification *)notification
-{
-  _fauxAccessoryInputView.hidden = YES;
-}
-
-
 - (void)keyboardDidShow:(NSNotification *)notification
 {
   //get the end frame of the keyboard when it's presented
@@ -300,55 +264,29 @@
   CGRect endFrame = valueObject.CGRectValue;
   
   //get the insets right on the tableview content
-  UIEdgeInsets tableViewInsets = UIEdgeInsetsMake(kTableViewTopInset, 0.0f, endFrame.size.height, 0.0f);
+  UIEdgeInsets tableViewInsets = UIEdgeInsetsMake(kTableViewTopInset,
+                                                  0.0f,
+                                                  endFrame.size.height,
+                                                  0.0f);
   [self setTableViewInsets:tableViewInsets];
-  
-  //get the cursor in the real input view
-  [_accessoryInputView.textfield becomeFirstResponder];
-  
+ 
   //somehow scroll to the bottom of the list
   [self scrollToLatestEntryAnimated:YES];
 }
 
 
-- (void)keyboardWillHide:(NSNotification *)notification
-{
-  _fauxAccessoryInputView.hidden = NO;
-  
-  //prevents the keyboard auto-reappearing
-  [_accessoryInputView.textfield resignFirstResponder];
-}
-
-
-- (void)keyboardDidHide:(NSNotification *)notification
-{
-  UIEdgeInsets tableViewInsets = UIEdgeInsetsMake(kTableViewTopInset, 0.0f, kAccessoryInputViewHeight, 0.0f);
-  [self setTableViewInsets:tableViewInsets];
-}
-
-
 #pragma mark - Accessory Input View
 
-+ (AccessoryInputView *)accessoryInputViewWithFrame:(CGRect)frame actAsPlaceholder:(BOOL)placeholder
++ (AccessoryInputView *)accessoryInputViewWithFrame:(CGRect)frame
 {
   AccessoryInputView *inputView = [[AccessoryInputView alloc] initWithFrame:frame
                                                              inputViewStyle:UIInputViewStyleKeyboard
-                                                                placeholder:placeholder];
+                                                                placeholder:NO];
   return inputView;
 }
 
 
 #pragma mark - Textfield Delegate
-
-- (void)textFieldDidEndEditing:(UITextField *)textField
-{
-  // When the keyboard hides, duplicate the text in the real input view to the faux input view
-  NSString *remainingText = textField.text;
-  NSUInteger remainingTextLength = remainingText.length;
-  if (remainingTextLength > 0) {
-    _fauxAccessoryInputView.textfield.text = remainingText;
-  }
-}
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
@@ -366,6 +304,18 @@
       }
   }
   return NO;
+}
+
+#pragma mark - this is going to be awesome
+
+- (BOOL)canBecomeFirstResponder
+{
+  return YES;
+}
+
+- (UIView *)inputAccessoryView
+{
+  return _accessoryInputView;
 }
 
 @end
