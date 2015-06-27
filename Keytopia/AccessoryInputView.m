@@ -73,15 +73,21 @@
   
   
   // init subviews
-  CGFloat width = CGRectGetWidth(self.frame);
-  _textfield      = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, width - 44, 44)];
   _optionsButton  = [UIButton buttonWithType:UIButtonTypeCustom];
-  [_optionsButton setFrame:CGRectMake(width - 44, 0, 44, 44)];
-  _containingView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, width, 44)];
+
+  // auto-resizing
+//  CGFloat width = CGRectGetWidth(self.frame);
+//  _textfield      = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, width - 44, 44)];
+//  [_optionsButton setFrame:CGRectMake(width - 44, 0, 44, 44)];
+//  _containingView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, width, 44)];
   
   // auto layout
-//  [_textfield setTranslatesAutoresizingMaskIntoConstraints:NO];
-//  [_optionsButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+  // *** COMMENT OUT FOR AUTORESIZING ***
+  _textfield      = [[UITextField alloc] initWithFrame:CGRectZero];
+  [_optionsButton setFrame:CGRectZero];
+  _containingView = [[UIView alloc] initWithFrame:CGRectZero];
+  [_textfield setTranslatesAutoresizingMaskIntoConstraints:NO];
+
   [_containingView setTranslatesAutoresizingMaskIntoConstraints:NO];
   
   [_containingView addSubview:_textfield];
@@ -130,10 +136,6 @@
     _blurBackgroundView.frame = self.bounds;
     [self addSubview:_blurBackgroundView];
     [self sendSubviewToBack:_blurBackgroundView];
-  }
-  else {
-    //DEBUG
-    //[self setBackgroundColor:[[UIColor clearColor] colorWithAlphaComponent:0.5]];
   }
 }
 
@@ -190,18 +192,19 @@
     // text entry
     _textentryConstraints = [NSMutableArray array];
     
-//    [_textentryConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-6-[_textfield]-6-[_optionsButton(==32)]-6-|"
-//                                                                                       options:kNilOptions
-//                                                                                       metrics:nil
-//                                                                                         views:constrained]];
-//    [_textentryConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_textfield(==32)]-6-|"
-//                                                                                       options:kNilOptions
-//                                                                                       metrics:nil
-//                                                                                         views:constrained]];
-//    [_textentryConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_optionsButton(==32)]-6-|"
-//                                                                                       options:kNilOptions
-//                                                                                       metrics:nil
-//                                                                                         views:constrained]];
+    // *** COMMENT OUT FOR AUTORESIZING ***
+    [_textentryConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-6-[_textfield]-6-[_optionsButton(==32)]-6-|"
+                                                                                       options:kNilOptions
+                                                                                       metrics:nil
+                                                                                         views:constrained]];
+    [_textentryConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_textfield(==32)]-6-|"
+                                                                                       options:kNilOptions
+                                                                                       metrics:nil
+                                                                                         views:constrained]];
+    [_textentryConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_optionsButton(==32)]-6-|"
+                                                                                       options:kNilOptions
+                                                                                       metrics:nil
+                                                                                         views:constrained]];
     
   }
   
@@ -234,10 +237,8 @@
      if (_presenting) {
        _presenting = !_presenting;
        [self invalidateIntrinsicContentSize];
-       
      }
    }];
-  
 }
 
 
@@ -319,23 +320,6 @@
 
 - (void)setupOptionalContentViews
 {
-  //  _flow = [[UICollectionViewFlowLayout alloc] init];
-  //  _photos = [[PhotoLibraryCollection alloc] initWithCollectionViewLayout:_flow];
-  //  _collectionView = _photos.collectionView;
-  //  [_flow setScrollDirection:UICollectionViewScrollDirectionHorizontal];
-  //  [_flow setEstimatedItemSize:CGSizeMake(100, 100)];
-  //  [self addChildViewController:_photos];
-  //  CGFloat bottomInset       = strongSelf.tableview.contentInset.bottom;
-  //  CGFloat topInset          = strongSelf.tableview.contentInset.top;
-  //  UIEdgeInsets currentInset = UIEdgeInsetsMake(60 + topInset, 10, bottomInset, 10);
-  //
-  //  if (show) {
-  //    [strongSelf.view addSubview:strongSelf.collectionView];
-  //    strongSelf.collectionView.contentInset = currentInset;
-  //  }
-  //  else {
-  //    [strongSelf.collectionView removeFromSuperview];
-  //  }
   
 }
 
