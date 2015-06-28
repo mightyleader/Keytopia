@@ -195,10 +195,8 @@
                                                                                          views:constrained]];
     
   }
-  
   [self addConstraints:_containerConstraints];
   [_containingView addConstraints:_textentryConstraints];
-  
 }
 
 
