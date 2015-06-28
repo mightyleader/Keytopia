@@ -50,7 +50,6 @@
     [self setupOptionButtons];
     [self setupConstraints];
     [self debugViewSettings];
-  [_textfield becomeFirstResponder];
   }
   return self;
 }
@@ -195,10 +194,8 @@
                                                                                          views:constrained]];
     
   }
-  
   [self addConstraints:_containerConstraints];
   [_containingView addConstraints:_textentryConstraints];
-  
 }
 
 
@@ -244,7 +241,7 @@
 {
   for (UIButton *button in _optionButtons) {
     [button setBackgroundColor:[UIColor clearColor]]; // TODO: make these refer to constants
-    [button.imageView setTintColor:[UIColor grayColor]];
+    [button.imageView setTintColor:[UIColor blackColor]];
   }
 }
 
@@ -262,8 +259,8 @@
   
   // Manage selection state
   [self deselectAllButtons];
-  [sender setBackgroundColor:[UIColor grayColor]];
-  [sender setTintColor:[UIColor whiteColor]];
+  [sender setBackgroundColor:[UIColor darkGrayColor]];
+  [[sender imageView] setTintColor:[UIColor whiteColor]];
   
   // Call any associated block code
   switch (chosenOption) {
