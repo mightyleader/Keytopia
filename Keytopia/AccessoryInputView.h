@@ -36,7 +36,6 @@ typedef void(^AccessoryInputViewOptionSelectHandler)(BOOL);
 @property (nonatomic, copy) AccessoryInputViewOptionSelectHandler vcardHandler;
 
 - (instancetype)initWithFrame:(CGRect)frame
-               inputViewStyle:(UIInputViewStyle)inputViewStyle
-                  placeholder:(BOOL)placeholder;
+               inputViewStyle:(UIInputViewStyle)inputViewStyle;
 
 @end

@@ -21,7 +21,6 @@
 @property (nonatomic) UIView *optionsContainer;
 @property (nonatomic) NSArray *optionButtons;
 
-@property (nonatomic) BOOL placeholder;
 @property (nonatomic) BOOL presenting;
 
 @property (nonatomic) UICollectionViewFlowLayout *flow;
@@ -41,18 +40,17 @@
 
 - (instancetype)initWithFrame:(CGRect)frame
                inputViewStyle:(UIInputViewStyle)inputViewStyle
-                  placeholder:(BOOL)placeholder
 {
   self = [super initWithFrame:frame
                inputViewStyle:inputViewStyle];
   if (self)
   {
-    _placeholder = placeholder;
     [self setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self setupSubviews];
     [self setupOptionButtons];
-//    [self setupConstraints];
+    [self setupConstraints];
     [self debugViewSettings];
+  [_textfield becomeFirstResponder];
   }
   return self;
 }
@@ -70,8 +68,6 @@
 
 - (void)setupSubviews
 {
-  
-  
   // init subviews
   _optionsButton  = [UIButton buttonWithType:UIButtonTypeCustom];
 
@@ -87,7 +83,7 @@
   [_optionsButton setFrame:CGRectZero];
   _containingView = [[UIView alloc] initWithFrame:CGRectZero];
   [_textfield setTranslatesAutoresizingMaskIntoConstraints:NO];
-
+  [_optionsButton setTranslatesAutoresizingMaskIntoConstraints:NO];
   [_containingView setTranslatesAutoresizingMaskIntoConstraints:NO];
   
   [_containingView addSubview:_textfield];
@@ -129,14 +125,6 @@
   [_optionsButton addTarget:self
                      action:@selector(toggleOptions:)
            forControlEvents:UIControlEventTouchUpInside];
-  
-  if (_placeholder) {
-    UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight];
-    _blurBackgroundView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
-    _blurBackgroundView.frame = self.bounds;
-    [self addSubview:_blurBackgroundView];
-    [self sendSubviewToBack:_blurBackgroundView];
-  }
 }
 
 - (void)setupOptionButtons
@@ -153,17 +141,17 @@
   
   for (NSInteger i = 0; i < count; i++)
     {
-    UIImage *image = [UIImage imageNamed:optionButtonImageNames[i]];
-    button = [[OptionButton alloc] initWithFrame:CGRectMake(width * i, 0.0f, width, 44.0f)
-                                        andImage:image
-                                       tintColor:[UIColor darkGrayColor]
-                                 backgroundColor:[UIColor clearColor]];
-    [button setTag:i];
-    [button addTarget:self
-               action:@selector(handleOptionBlockForButton:)
-     forControlEvents:UIControlEventTouchUpInside];
-    [optionButtons addObject:button];
-    [_optionsContainer addSubview:button];
+      UIImage *image = [UIImage imageNamed:optionButtonImageNames[i]];
+      button = [[OptionButton alloc] initWithFrame:CGRectMake(width * i, 0.0f, width, 44.0f)
+                                          andImage:image
+                                         tintColor:[UIColor darkGrayColor]
+                                   backgroundColor:[UIColor clearColor]];
+      [button setTag:i];
+      [button addTarget:self
+                 action:@selector(handleOptionBlockForButton:)
+       forControlEvents:UIControlEventTouchUpInside];
+      [optionButtons addObject:button];
+      [_optionsContainer addSubview:button];
     }
   
   [_containingView addSubview:_optionsContainer];
@@ -193,15 +181,15 @@
     _textentryConstraints = [NSMutableArray array];
     
     // *** COMMENT OUT FOR AUTORESIZING ***
-    [_textentryConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-6-[_textfield]-6-[_optionsButton(==32)]-6-|"
+    [_textentryConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[_textfield]-0-[_optionsButton(==44)]-0-|"
                                                                                        options:kNilOptions
                                                                                        metrics:nil
                                                                                          views:constrained]];
-    [_textentryConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_textfield(==32)]-6-|"
+    [_textentryConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_textfield(==44)]-0-|"
                                                                                        options:kNilOptions
                                                                                        metrics:nil
                                                                                          views:constrained]];
-    [_textentryConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_optionsButton(==32)]-6-|"
+    [_textentryConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_optionsButton(==44)]-0-|"
                                                                                        options:kNilOptions
                                                                                        metrics:nil
                                                                                          views:constrained]];
@@ -256,7 +244,7 @@
 {
   for (UIButton *button in _optionButtons) {
     [button setBackgroundColor:[UIColor clearColor]]; // TODO: make these refer to constants
-    [button.imageView setTintColor:[UIColor blackColor]];
+    [button.imageView setTintColor:[UIColor grayColor]];
   }
 }
 
@@ -274,8 +262,8 @@
   
   // Manage selection state
   [self deselectAllButtons];
-  [sender setBackgroundColor:[UIColor blackColor]];
-  [[sender imageView] setTintColor:[UIColor whiteColor]];
+  [sender setBackgroundColor:[UIColor grayColor]];
+  [sender setTintColor:[UIColor whiteColor]];
   
   // Call any associated block code
   switch (chosenOption) {
@@ -295,11 +283,13 @@
   }
 }
 
+
 - (void)changeHeightConstraintToPresenting:(BOOL)presenting
 {
   self.presenting = presenting;
   [self invalidateIntrinsicContentSize];
 }
+
 
 - (CGSize)intrinsicContentSize
 {

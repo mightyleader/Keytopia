@@ -45,7 +45,7 @@
   [self setupData];
   [self setupNotifications];
   [self setupTableview];
-  [self setupAccessoryInputViews];
+  [self setupAccessoryInputView];
   self.title = @"Keytopia";
 }
 
@@ -98,7 +98,7 @@
 }
 
 
-- (void)setupAccessoryInputViews
+- (void)setupAccessoryInputView
 {
   CGRect realFrame = CGRectMake(0.0f,
                                 0.0f,
@@ -280,8 +280,7 @@
 + (AccessoryInputView *)accessoryInputViewWithFrame:(CGRect)frame
 {
   AccessoryInputView *inputView = [[AccessoryInputView alloc] initWithFrame:frame
-                                                             inputViewStyle:UIInputViewStyleKeyboard
-                                                                placeholder:NO];
+                                                             inputViewStyle:UIInputViewStyleKeyboard];
   return inputView;
 }
 
