@@ -50,7 +50,6 @@
     [self setupOptionButtons];
     [self setupConstraints];
     [self debugViewSettings];
-  [_textfield becomeFirstResponder];
   }
   return self;
 }
