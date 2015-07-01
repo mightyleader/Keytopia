@@ -7,12 +7,14 @@
 //
 
 @import Foundation;
+@import UIKit;
 #import "ModelProtocol.h"
 
 @interface ModelMessage : NSObject <ModelProtocol>
 
 @property (nonatomic, readonly) NSString *message;
 @property (nonatomic, readonly) NSDate   *datePosted;
+@property (nonatomic, readonly) UIColor  *backgroundColor;
 @property (nonatomic, readonly) BOOL     sent;
 
 - (instancetype)initWithMessage:(NSString *)message

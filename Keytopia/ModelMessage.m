@@ -7,6 +7,7 @@
 //
 
 #import "ModelMessage.h"
+#import "UIColor+ColorHelper.h"
 
 @interface ModelMessage ()
 
@@ -28,6 +29,7 @@
     _message = message;
     _datePosted = postDate;
     _sent = sent;
+    _backgroundColor = [UIColor randomColourObjectWithAlpha:1.0];
   }
   return self;
 }

@@ -76,6 +76,7 @@
       }
     
     [mutableData addObject:thingToAddToArray];
+    thingToAddToArray = nil;
     }
   
   return [NSArray arrayWithArray:mutableData];

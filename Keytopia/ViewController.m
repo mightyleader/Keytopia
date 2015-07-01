@@ -11,6 +11,7 @@
 #import "Datasource.h"
 #import "ModelMessage.h"
 #import "ModelStatus.h"
+#import "UIColor+ColorHelper.h"
 
 @import QuartzCore;
 @import Photos;
@@ -86,6 +87,7 @@
 - (void)setupTableview
 {
   [_tableview setKeyboardDismissMode:UIScrollViewKeyboardDismissModeInteractive];
+  [_tableview setBackgroundColor:[UIColor clearColor]];
   [_tableview registerClass:[UITableViewCell class] forCellReuseIdentifier:@"numberCell"];
   [_tableview setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
   [_tableview setSeparatorColor:[UIColor clearColor]];
@@ -148,7 +150,7 @@
   UIColor *textColour;
   UIFont  *textFont;
   
-  [cell.textLabel.layer setCornerRadius:20.0f];
+  [cell.textLabel.layer setCornerRadius:9.0f];
   [cell.textLabel.layer setMasksToBounds:YES];
   [cell.textLabel setNumberOfLines:0];
   [cell.textLabel setLineBreakMode:NSLineBreakByWordWrapping];
@@ -156,18 +158,16 @@
   if ([object isKindOfClass:[ModelMessage class]]) {
     [cell.textLabel setTextAlignment:NSTextAlignmentLeft];
     textColour = [UIColor whiteColor];
-    textFont = [UIFont systemFontOfSize:14.0];
+    textFont = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
     cell.detailTextLabel.text = [[(ModelMessage *)object datePosted] description];
-    cell.textLabel.backgroundColor = [UIColor colorWithRed:1.000
-                                                     green:0.502
-                                                      blue:0.000
-                                                     alpha:1.000];
+    cell.textLabel.backgroundColor = [(ModelMessage *)object backgroundColor];
+    textColour = [UIColor textColorForBackgroundColor:[(ModelMessage *)object backgroundColor]];
   }
   
   if ([object isKindOfClass:[ModelStatus class]]) {
     [cell.textLabel setTextAlignment:NSTextAlignmentCenter];
-    textColour = [UIColor grayColor];
-    textFont = [UIFont boldSystemFontOfSize:10.0];
+    textColour = [UIColor lightGrayColor];
+    textFont = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption2];
     cell.detailTextLabel.text = @""; // TODO: make a constant
     [cell.textLabel.layer setCornerRadius:5.0];
     cell.textLabel.backgroundColor = [UIColor clearColor];
@@ -175,6 +175,8 @@
   
   cell.textLabel.textColor = textColour;
   cell.textLabel.font = textFont;
+  cell.contentView.backgroundColor = [UIColor clearColor];
+  cell.backgroundColor = [UIColor clearColor];
   
   return cell;
 }
