@@ -200,6 +200,7 @@
 
 
 #pragma mark - Event handler
+
 - (void)toggleOptions:(id)sender
 {
   CGRect frame    = _optionsContainer.frame;
