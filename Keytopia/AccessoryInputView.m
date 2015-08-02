@@ -11,6 +11,12 @@
 #import "PhotoLibraryCollection.h"
 @import QuartzCore;
 
+typedef enum : NSUInteger {
+  PresentationStateText = 0,
+  PresentationStateOptionsLow,
+  PresentationStateOptionsHigh,
+} PresentationState;
+
 @interface AccessoryInputView ()
 
 @property (nonatomic) UIView *containingView;
@@ -19,9 +25,10 @@
 @property (nonatomic) UIVisualEffectView *blurBackgroundView;
 
 @property (nonatomic) UIView *optionsContainer;
-@property (nonatomic) NSArray *optionButtons;
+@property (nonatomic) NSArray<__kindof UIView*> *optionButtons;
 
 @property (nonatomic) BOOL presenting;
+@property (nonatomic) PresentationState presentationState;
 
 @property (nonatomic) UICollectionViewFlowLayout *flow;
 //@property (nonatomic) PhotoLibraryCollection *photos;
@@ -235,6 +242,7 @@
     image = [UIImage imageNamed:@"CloseButton"];
   }
   [_optionsButton setImage:image forState:UIControlStateNormal];
+  _presenting = !presenting;
 }
 
 
