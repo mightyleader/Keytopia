@@ -13,18 +13,16 @@
 
 @interface AccessoryInputView ()
 
-@property (nonatomic) UIView *containingView;
-@property (nonatomic) UITextField *textfield;
-@property (nonatomic) UIButton   *optionsButton;
-@property (nonatomic) UIVisualEffectView *blurBackgroundView;
+@property (nonatomic) UIView        *containingView;
+@property (nonatomic) UITextField   *textfield;
+@property (nonatomic) UIButton      *optionsButton;
+@property (nonatomic) UIView        *additionalOptionsView;
 
-@property (nonatomic) UIView *optionsContainer;
-@property (nonatomic) NSArray *optionButtons;
+@property (nonatomic) UIView        *optionsContainer;
+@property (nonatomic) NSArray       *optionButtons;
 
-@property (nonatomic) BOOL presenting;
-
-@property (nonatomic) UICollectionViewFlowLayout *flow;
-//@property (nonatomic) PhotoLibraryCollection *photos;
+@property (nonatomic) BOOL presentingButtons;
+@property (nonatomic) BOOL presentingAttachmentType;
 
 @property (nonatomic) NSMutableArray *containerConstraints;
 @property (nonatomic) NSMutableArray *textentryConstraints;
@@ -33,6 +31,8 @@
 @property (nonatomic) NSLayoutConstraint *heightConstraint;
 @property (nonatomic) NSLayoutConstraint *optionsHiddenLeadingConstraint;
 @property (nonatomic) NSLayoutConstraint *optionsShowingLeadingConstraint;
+@property (nonatomic) NSLayoutConstraint *additionalHiddenHeightConstraint;
+@property (nonatomic) NSLayoutConstraint *additionalShowingHeightConstraint;
 
 @end
 
@@ -47,11 +47,13 @@
                  inputViewStyle:inputViewStyle];
     if (self)
     {
+        _presentingButtons          = NO;
+        _presentingAttachmentType   = NO;
         [self setTranslatesAutoresizingMaskIntoConstraints:NO];
         [self setupSubviews];
         [self setupOptionButtons];
         [self setupConstraints];
-        [self debugViewSettings];
+//        [self debugViewSettings];
     }
     return self;
 }
@@ -69,22 +71,14 @@
 
 - (void)setupSubviews
 {
-    // init subviews
     _optionsButton  = [UIButton buttonWithType:UIButtonTypeCustom];
-    
-    // auto-resizing
-    //  CGFloat width = CGRectGetWidth(self.frame);
-    //  _textfield      = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, width - 44, 44)];
-    //  [_optionsButton setFrame:CGRectMake(width - 44, 0, 44, 44)];
-    //  _containingView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, width, 44)];
-    
-    // auto layout
-    // *** COMMENT OUT FOR AUTORESIZING ***
-    _textfield      = [[UITextField alloc] initWithFrame:CGRectZero];
     [_optionsButton setFrame:CGRectZero];
-    _containingView = [[UIView alloc] initWithFrame:CGRectZero];
-    [_textfield setTranslatesAutoresizingMaskIntoConstraints:NO];
     [_optionsButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    _textfield      = [[UITextField alloc] initWithFrame:CGRectZero];
+    [_textfield setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    _containingView = [[UIView alloc] initWithFrame:CGRectZero];
     [_containingView setTranslatesAutoresizingMaskIntoConstraints:NO];
     
     [_containingView addSubview:_textfield];
@@ -121,11 +115,16 @@
     [_optionsButton setBackgroundColor:[UIColor clearColor]]; //DEBUG
     [_containingView setBackgroundColor:[UIColor clearColor]];
     
-    [self changeOptionsButtonImage:NO];
+    [self changeOptionsButtonImage:_presentingButtons];
     
     [_optionsButton addTarget:self
                        action:@selector(toggleOptions:)
              forControlEvents:UIControlEventTouchUpInside];
+    
+    _additionalOptionsView = [[UIView alloc] init];
+    [_additionalOptionsView setTranslatesAutoresizingMaskIntoConstraints: NO];
+    _additionalOptionsView.backgroundColor = [UIColor colorWithWhite:0.5 alpha:0.9];
+    [_containingView addSubview: _additionalOptionsView];
 }
 
 - (void)setupOptionButtons
@@ -135,12 +134,10 @@
     
     OptionButton *button;
     NSInteger count = optionButtonImageNames.count;
-    CGFloat width   = 55.0f; //TODO: Abstract to constant
+    CGFloat width   = 52.0f; //TODO: Abstract to constant
     
-    _optionsContainer = [[UIView alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.frame), 0.0f, width * count, 44.0f)];
+    _optionsContainer = [[UIView alloc] initWithFrame:CGRectZero];
     [_optionsContainer setTranslatesAutoresizingMaskIntoConstraints: NO];
-    [_optionsContainer setBackgroundColor:[UIColor clearColor]];
-    
     
     for (NSInteger i = 0; i < count; i++)
     {
@@ -158,24 +155,38 @@
         [_optionsContainer addSubview:button];
         if (i == 0)
         {
-            [NSLayoutConstraint activateConstraints: @[[button.leadingAnchor constraintEqualToAnchor: _optionsContainer.leadingAnchor], [button.topAnchor constraintEqualToAnchor: _optionsContainer.topAnchor]]];
+            [NSLayoutConstraint activateConstraints: @[
+                                                       [button.leadingAnchor constraintEqualToAnchor: _optionsContainer.leadingAnchor],
+                                                       [button.topAnchor constraintEqualToAnchor: _optionsContainer.topAnchor],
+                                                       [button.bottomAnchor constraintEqualToAnchor:_optionsContainer.bottomAnchor],
+                                                       [button.widthAnchor constraintEqualToConstant:width]
+                                                       ]];
         }
         else
         {
             OptionButton *previousButton = (OptionButton *)[optionButtons objectAtIndex: i - 1];
-            [NSLayoutConstraint activateConstraints: @[[button.leadingAnchor constraintEqualToAnchor: previousButton.trailingAnchor], [button.topAnchor constraintEqualToAnchor: previousButton.topAnchor]]];
+            [NSLayoutConstraint activateConstraints: @[
+                                                       [button.leadingAnchor constraintEqualToAnchor: previousButton.trailingAnchor],
+                                                       [button.topAnchor constraintEqualToAnchor: previousButton.topAnchor],
+                                                       [button.bottomAnchor constraintEqualToAnchor:_optionsContainer.bottomAnchor],
+                                                       [button.widthAnchor constraintEqualToConstant:width]
+                                                       ]];
         }
     }
     
     [_containingView addSubview:_optionsContainer];
     
     _optionsShowingLeadingConstraint = [_optionsContainer.leadingAnchor constraintEqualToAnchor: _containingView.leadingAnchor];
-    _optionsHiddenLeadingConstraint = [_optionsContainer.leadingAnchor constraintEqualToAnchor: _containingView.trailingAnchor];
-    [NSLayoutConstraint activateConstraints: @[[_optionsContainer.bottomAnchor constraintEqualToAnchor: _containingView.bottomAnchor], [_optionsContainer.heightAnchor constraintEqualToAnchor: _containingView.heightAnchor], [_optionsContainer.widthAnchor constraintEqualToAnchor: _containingView.widthAnchor]]];
+    _optionsHiddenLeadingConstraint  = [_optionsContainer.leadingAnchor constraintEqualToAnchor: _containingView.trailingAnchor];
+    
+    [NSLayoutConstraint activateConstraints: @[
+                                               [_optionsContainer.bottomAnchor constraintEqualToAnchor: _containingView.bottomAnchor],
+                                               [_optionsContainer.heightAnchor constraintEqualToAnchor: _containingView.heightAnchor],
+                                               [_optionsContainer.widthAnchor constraintEqualToConstant:(count * width)]
+                                               ]];
     
     [NSLayoutConstraint activateConstraints: @[_optionsHiddenLeadingConstraint]];
     _optionButtons = [NSArray arrayWithArray:optionButtons];
-    _presenting = NO;
 }
 
 - (void)setupConstraints
@@ -183,9 +194,7 @@
     if (!_textentryConstraints || !_containerConstraints) {
         NSDictionary *constrained = NSDictionaryOfVariableBindings(_optionsButton, _textfield, _containingView);
         
-        // container view
         _containerConstraints = [NSMutableArray array];
-        
         [_containerConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[_containingView]-0-|"
                                                                                            options:kNilOptions
                                                                                            metrics:nil
@@ -195,10 +204,7 @@
                                                                                            metrics:nil
                                                                                              views:constrained]];
         
-        // text entry
         _textentryConstraints = [NSMutableArray array];
-        
-        // *** COMMENT OUT FOR AUTORESIZING ***
         [_textentryConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[_textfield]-0-[_optionsButton(==44)]-0-|"
                                                                                            options:kNilOptions
                                                                                            metrics:nil
@@ -215,18 +221,34 @@
     }
     [self addConstraints:_containerConstraints];
     [_containingView addConstraints:_textentryConstraints];
+    
+    NSLayoutConstraint *additionalLeading = [_additionalOptionsView.leadingAnchor constraintEqualToAnchor: self.leadingAnchor];
+    NSLayoutConstraint *additionalTrailing = [_additionalOptionsView.trailingAnchor constraintEqualToAnchor: self.trailingAnchor];
+    NSLayoutConstraint *constraintToOptionsContainer = [_additionalOptionsView.bottomAnchor constraintEqualToAnchor: _optionsContainer.topAnchor];
+    _additionalHiddenHeightConstraint   = [_additionalOptionsView.heightAnchor constraintEqualToConstant:0.0f];
+    _additionalShowingHeightConstraint  = [_additionalOptionsView.heightAnchor constraintEqualToConstant:116.0f];
+    
+    NSLayoutConstraint *correctHeightConstraint = _presentingAttachmentType ? _additionalShowingHeightConstraint
+                                                                            : _additionalHiddenHeightConstraint;
+    
+    [NSLayoutConstraint activateConstraints:@[
+                                              additionalLeading,
+                                              additionalTrailing,
+                                              constraintToOptionsContainer,
+                                              correctHeightConstraint
+                                              ]];
 }
 
 
 #pragma mark - Event handler
 - (void)toggleOptions:(id)sender
 {
-    
     CGRect frame    = _optionsContainer.frame;
     CGFloat startx  = CGRectGetMaxX(self.frame);
     CGFloat endx  = CGRectGetMinX(_optionsButton.frame) - CGRectGetWidth(frame);
-    BOOL isShowingOptions = _optionsShowingLeadingConstraint.isActive;//(frame.origin.x == endx);
+    BOOL isShowingOptions = _optionsShowingLeadingConstraint.isActive;// TODO: Rework this as we're already doing it
     frame.origin.x  =  isShowingOptions ? startx : endx; // Move based on current position
+    __block UIView *sendingView = sender;
     [UIView animateWithDuration:0.2
                           delay:0.0
          usingSpringWithDamping:0.4
@@ -234,11 +256,12 @@
                         options:UIViewAnimationOptionCurveEaseInOut
                      animations:
      ^{
-         
-         //     [_optionsContainer setFrame:frame];
-         [self changeOptionsButtonImage:!_presenting];
+         [self changeOptionsButtonImage:!_presentingButtons];
          [_textfield setAlpha:isShowingOptions];
          [self deselectAllButtons];
+         if ([sender isKindOfClass:[UIView class]]) {
+             sendingView.transform = CGAffineTransformScale(CGAffineTransformIdentity, 0.7, 0.7);
+         }
          
          if (!isShowingOptions)
          {
@@ -254,47 +277,48 @@
          
          
      } completion:^(BOOL finished) {
-         if (_presenting) {
-             _presenting = !_presenting;
-             [self invalidateIntrinsicContentSize];
+         sendingView.transform = CGAffineTransformIdentity;
+         _presentingButtons = !_presentingButtons;
+         [self invalidateIntrinsicContentSize];
+         if (_presentingAttachmentType)
+         {
+             [self toggleOptionsWithConstraints:_optionsButton];
          }
      }];
 }
 
-- (void) toggleOptionsWithConstraints: (id) sender
+- (void)toggleOptionsWithConstraints:(id)sender
 {
     NSLayoutConstraint *optionsHeight = [_optionsContainer.heightAnchor constraintEqualToAnchor: _optionsButton.heightAnchor];
     [NSLayoutConstraint activateConstraints: @[optionsHeight]];
     
     [_containingView bringSubviewToFront: _optionsContainer];
-    //    _optionsContainer.backgroundColor = [UIColor redColor];
     
-    UIView *additionalOptionsView = [[UIView alloc] init];
-    [additionalOptionsView setTranslatesAutoresizingMaskIntoConstraints: NO];
-    additionalOptionsView.backgroundColor = [UIColor blueColor];
-    [_containingView addSubview: additionalOptionsView];
+    __block UIView *sendingView = sender;
+    __block NSLayoutConstraint *correctHeightConstraint     = _additionalShowingHeightConstraint;
+    __block NSLayoutConstraint *incorrectHeightConstraint   = _additionalHiddenHeightConstraint;
     
-    NSLayoutConstraint *additionalLeading = [additionalOptionsView.leadingAnchor constraintEqualToAnchor: self.leadingAnchor];
-    NSLayoutConstraint *additionalTrailing = [additionalOptionsView.trailingAnchor constraintEqualToAnchor: self.trailingAnchor];
-    NSLayoutConstraint *constantHeight = [additionalOptionsView.heightAnchor constraintEqualToConstant: 116];
-    NSLayoutConstraint *constraintToOptionsContainer = [additionalOptionsView.bottomAnchor constraintEqualToAnchor: _optionsContainer.topAnchor];
+    if ( _presentingAttachmentType ) {
+        correctHeightConstraint     = _additionalHiddenHeightConstraint;
+        incorrectHeightConstraint   = _additionalShowingHeightConstraint;
+    }
     
-    _presenting = YES;
-    
-    [UIView animateWithDuration:0.2
+    [UIView animateWithDuration:0.1
                           delay:0.0
          usingSpringWithDamping:0.4
           initialSpringVelocity:0.4
                         options:UIViewAnimationOptionCurveEaseInOut
                      animations:^{
-                         [NSLayoutConstraint activateConstraints: @[additionalLeading, additionalTrailing, constantHeight, constraintToOptionsContainer]];
+                         sendingView.transform = CGAffineTransformScale(CGAffineTransformIdentity, 0.7, 0.7);
+                         [NSLayoutConstraint deactivateConstraints:@[incorrectHeightConstraint]];
+                         [NSLayoutConstraint activateConstraints:@[correctHeightConstraint]];
                          [self invalidateIntrinsicContentSize];
                          [self layoutIfNeeded];
                      }
                      completion:^(BOOL finished){
-                         
+                          _presentingAttachmentType = !_presentingAttachmentType;
+                         sendingView.transform = CGAffineTransformIdentity;
                      }];
-    
 }
 
 
@@ -319,15 +343,10 @@
 
 - (void)handleOptionBlockForButton:(id)sender
 {
-    //    [self toggleOptionsWithConstraints: sender];
-    //    self.photoHandler(YES);
-    //    return;
-    //Switch on the button by the tag
     AccessoryInputOption chosenOption = [sender tag];
     BOOL show = YES;
     
-    // Only change the layout bounds of self if not already changed
-    if (!_presenting) {
+    if (!_presentingAttachmentType) {
         [self changeHeightConstraintToPresenting:YES];
     }
     
@@ -357,7 +376,7 @@
 
 - (void)changeHeightConstraintToPresenting:(BOOL)presenting
 {
-    self.presenting = presenting;
+    _presentingAttachmentType = presenting;
     [self invalidateIntrinsicContentSize];
 }
 
@@ -365,7 +384,7 @@
 - (CGSize)intrinsicContentSize
 {
     CGSize newSize = self.bounds.size;
-    if (self.presenting)
+    if (_presentingAttachmentType)
     {
         newSize.height = 160.0;
     }
