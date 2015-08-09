@@ -6,8 +6,8 @@
 //  Copyright (c) 2015 cocoadelica. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+@import UIKit;
 
-@interface CameraInputViewController : UIInputViewController
+@interface KeytopiaCameraInputViewController : UIInputViewController
 
 @end

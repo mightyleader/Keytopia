@@ -6,12 +6,19 @@
 //  Copyright (c) 2015 cocoadelica. All rights reserved.
 //
 
-#import "AccessoryInputView.h"
-#import "OptionButton.h"
-#import "PhotoLibraryCollection.h"
+#import "CDAAccessoryInputView.h"
+#import "CDAOptionButton.h"
+#import "KeytopiaPhotoLibraryCollection.h"
 @import QuartzCore;
 
-@interface AccessoryInputView ()
+#define KTAtextEntryIconAlpha       0.2f
+#define KTALayerCornerRadius        5.0f
+#define KTAOptionsButtonWidth       52.0f
+#define KTAStandardTouchDimension   44.0f
+#define ZERO_INT                    0
+#define ZERO_FLOAT                  0.0f
+
+@interface CDAAccessoryInputView ()
 
 @property (nonatomic) UIView        *containingView;
 @property (nonatomic) UITextField   *textfield;
@@ -24,10 +31,6 @@
 @property (nonatomic) BOOL presentingButtons;
 @property (nonatomic) BOOL presentingAttachmentType;
 
-@property (nonatomic) NSMutableArray *containerConstraints;
-@property (nonatomic) NSMutableArray *textentryConstraints;
-@property (nonatomic) NSMutableArray *optionsConstraints;
-
 @property (nonatomic) NSLayoutConstraint *heightConstraint;
 @property (nonatomic) NSLayoutConstraint *optionsHiddenLeadingConstraint;
 @property (nonatomic) NSLayoutConstraint *optionsShowingLeadingConstraint;
@@ -36,7 +39,7 @@
 
 @end
 
-@implementation AccessoryInputView
+@implementation CDAAccessoryInputView
 
 #pragma mark - Public interface
 
@@ -51,9 +54,9 @@
         _presentingAttachmentType   = NO;
         [self setTranslatesAutoresizingMaskIntoConstraints:NO];
         [self setupSubviews];
-        [self setupOptionButtons];
+        [self setupOptionButtonsAndConstraints];
         [self setupConstraints];
-//        [self debugViewSettings];
+        [self debugViewSettings];
     }
     return self;
 }
@@ -90,15 +93,15 @@
     [_textfield setReturnKeyType:UIReturnKeySend];
     [_textfield setTintColor:[UIColor colorWithRed:1.000
                                              green:0.502
-                                              blue:0.000
+                                              blue:ZERO_FLOAT
                                              alpha:1.000]];
     
     [_textfield setTextColor:[UIColor colorWithWhite:0.200
                                                alpha:1.000]];
     
-    [_textfield.layer setCornerRadius:5.0f];
+    [_textfield.layer setCornerRadius:KTALayerCornerRadius];
     [_textfield setBackgroundColor:[UIColor colorWithWhite:0.8
-                                                     alpha:0.0]];
+                                                     alpha:ZERO_FLOAT]];
     
     [_textfield setClearButtonMode:UITextFieldViewModeWhileEditing];
     
@@ -106,7 +109,7 @@
     
     UIImage *messageIcon = [UIImage imageNamed:@"Message"];
     UIImageView *leftIcon = [[UIImageView alloc] initWithImage:messageIcon];
-    [leftIcon setAlpha:0.2];
+    [leftIcon setAlpha:KTAtextEntryIconAlpha];
     [leftIcon setTintColor:[UIColor grayColor]];
     [_textfield setLeftViewMode:UITextFieldViewModeAlways];
     [_textfield setLeftView:leftIcon];
@@ -127,14 +130,14 @@
     [_containingView addSubview: _additionalOptionsView];
 }
 
-- (void)setupOptionButtons
+- (void)setupOptionButtonsAndConstraints
 {
     NSMutableArray *optionButtons = [NSMutableArray array];
     NSArray *optionButtonImageNames = @[@"Contact", @"BusinessCard", @"Audio", @"Sticker", @"Smartphone", @"Photo" ];
     
-    OptionButton *button;
+    CDAOptionButton *button;
     NSInteger count = optionButtonImageNames.count;
-    CGFloat width   = 52.0f; //TODO: Abstract to constant
+    CGFloat width   = KTAOptionsButtonWidth;
     
     _optionsContainer = [[UIView alloc] initWithFrame:CGRectZero];
     [_optionsContainer setTranslatesAutoresizingMaskIntoConstraints: NO];
@@ -142,7 +145,7 @@
     for (NSInteger i = 0; i < count; i++)
     {
         UIImage *image = [UIImage imageNamed:optionButtonImageNames[i]];
-        button = [[OptionButton alloc] initWithFrame:CGRectMake(width * i, 0.0f, width, 44.0f)
+        button = [[CDAOptionButton alloc] initWithFrame:CGRectMake(width * i, ZERO_FLOAT, width, KTAStandardTouchDimension)
                                             andImage:image
                                            tintColor:[UIColor darkGrayColor]
                                      backgroundColor:[UIColor clearColor]];
@@ -153,7 +156,7 @@
          forControlEvents:UIControlEventTouchUpInside];
         [optionButtons addObject:button];
         [_optionsContainer addSubview:button];
-        if (i == 0)
+        if (i == ZERO_INT)
         {
             [NSLayoutConstraint activateConstraints: @[
                                                        [button.leadingAnchor constraintEqualToAnchor: _optionsContainer.leadingAnchor],
@@ -164,7 +167,7 @@
         }
         else
         {
-            OptionButton *previousButton = (OptionButton *)[optionButtons objectAtIndex: i - 1];
+            CDAOptionButton *previousButton = (CDAOptionButton *)[optionButtons objectAtIndex: i - 1];
             [NSLayoutConstraint activateConstraints: @[
                                                        [button.leadingAnchor constraintEqualToAnchor: previousButton.trailingAnchor],
                                                        [button.topAnchor constraintEqualToAnchor: previousButton.topAnchor],
@@ -191,41 +194,43 @@
 
 - (void)setupConstraints
 {
-    if (!_textentryConstraints || !_containerConstraints) {
-        NSDictionary *constrained = NSDictionaryOfVariableBindings(_optionsButton, _textfield, _containingView);
-        
-        _containerConstraints = [NSMutableArray array];
-        [_containerConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[_containingView]-0-|"
-                                                                                           options:kNilOptions
-                                                                                           metrics:nil
-                                                                                             views:constrained]];
-        [_containerConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[_containingView]-0-|"
-                                                                                           options:kNilOptions
-                                                                                           metrics:nil
-                                                                                             views:constrained]];
-        
-        _textentryConstraints = [NSMutableArray array];
-        [_textentryConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[_textfield]-0-[_optionsButton(==44)]-0-|"
-                                                                                           options:kNilOptions
-                                                                                           metrics:nil
-                                                                                             views:constrained]];
-        [_textentryConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_textfield(==44)]-0-|"
-                                                                                           options:kNilOptions
-                                                                                           metrics:nil
-                                                                                             views:constrained]];
-        [_textentryConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_optionsButton(==44)]-0-|"
-                                                                                           options:kNilOptions
-                                                                                           metrics:nil
-                                                                                             views:constrained]];
-        
-    }
-    [self addConstraints:_containerConstraints];
-    [_containingView addConstraints:_textentryConstraints];
+    NSLayoutConstraint *containerLeft   = [_containingView.leftAnchor constraintEqualToAnchor:self.leftAnchor];
+    NSLayoutConstraint *containerRight  = [_containingView.rightAnchor constraintEqualToAnchor:self.rightAnchor];
+    NSLayoutConstraint *containerTop    = [_containingView.topAnchor constraintEqualToAnchor:self.topAnchor];
+    NSLayoutConstraint *containerBottom = [_containingView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor];
+    
+    [NSLayoutConstraint activateConstraints:@[containerLeft,
+                                              containerRight,
+                                              containerBottom,
+                                              containerTop
+                                              ]];
+    
+    NSLayoutConstraint *buttonRight     = [_optionsButton.rightAnchor constraintEqualToAnchor:self.rightAnchor];
+    NSLayoutConstraint *buttonTop       = [_optionsButton.topAnchor constraintEqualToAnchor:self.topAnchor];
+    NSLayoutConstraint *buttonBottom    = [_optionsButton.bottomAnchor constraintEqualToAnchor:self.bottomAnchor];
+    NSLayoutConstraint *buttonWidth     = [_optionsButton.widthAnchor constraintEqualToConstant:KTAStandardTouchDimension];
+    
+    [NSLayoutConstraint activateConstraints:@[buttonTop,
+                                              buttonBottom,
+                                              buttonRight,
+                                              buttonWidth
+                                              ]];
+    
+    NSLayoutConstraint *textEntryLeft   = [_textfield.leftAnchor constraintEqualToAnchor:self.leftAnchor];
+    NSLayoutConstraint *textEntryRight  = [_textfield.rightAnchor constraintEqualToAnchor:_optionsButton.leftAnchor];
+    NSLayoutConstraint *textEntryTop    = [_textfield.topAnchor constraintEqualToAnchor:self.topAnchor];
+    NSLayoutConstraint *textEntryBottom = [_textfield.bottomAnchor constraintEqualToAnchor:self.bottomAnchor];
+    
+    [NSLayoutConstraint activateConstraints:@[textEntryLeft,
+                                              textEntryRight,
+                                              textEntryTop,
+                                              textEntryBottom
+                                              ]];
     
     NSLayoutConstraint *additionalLeading = [_additionalOptionsView.leadingAnchor constraintEqualToAnchor: self.leadingAnchor];
     NSLayoutConstraint *additionalTrailing = [_additionalOptionsView.trailingAnchor constraintEqualToAnchor: self.trailingAnchor];
     NSLayoutConstraint *constraintToOptionsContainer = [_additionalOptionsView.bottomAnchor constraintEqualToAnchor: _optionsContainer.topAnchor];
-    _additionalHiddenHeightConstraint   = [_additionalOptionsView.heightAnchor constraintEqualToConstant:0.0f];
+    _additionalHiddenHeightConstraint   = [_additionalOptionsView.heightAnchor constraintEqualToConstant:ZERO_FLOAT];
     _additionalShowingHeightConstraint  = [_additionalOptionsView.heightAnchor constraintEqualToConstant:116.0f];
     
     NSLayoutConstraint *correctHeightConstraint = _presentingAttachmentType ? _additionalShowingHeightConstraint
@@ -241,16 +246,17 @@
 
 
 #pragma mark - Event handler
+
 - (void)toggleOptions:(id)sender
 {
     CGRect frame    = _optionsContainer.frame;
     CGFloat startx  = CGRectGetMaxX(self.frame);
     CGFloat endx  = CGRectGetMinX(_optionsButton.frame) - CGRectGetWidth(frame);
-    BOOL isShowingOptions = _optionsShowingLeadingConstraint.isActive;// TODO: Rework this as we're already doing it
+    BOOL isShowingOptions = _optionsShowingLeadingConstraint.isActive;
     frame.origin.x  =  isShowingOptions ? startx : endx; // Move based on current position
     __block UIView *sendingView = sender;
     [UIView animateWithDuration:0.2
-                          delay:0.0
+                          delay:ZERO_FLOAT
          usingSpringWithDamping:0.4
           initialSpringVelocity:0.4
                         options:UIViewAnimationOptionCurveEaseInOut
@@ -304,7 +310,7 @@
     }
     
     [UIView animateWithDuration:0.1
-                          delay:0.0
+                          delay:ZERO_FLOAT
          usingSpringWithDamping:0.4
           initialSpringVelocity:0.4
                         options:UIViewAnimationOptionCurveEaseInOut
@@ -335,7 +341,7 @@
 - (void)deselectAllButtons
 {
     for (UIButton *button in _optionButtons) {
-        [button setBackgroundColor:[UIColor clearColor]]; // TODO: make these refer to constants
+        [button setBackgroundColor:[UIColor clearColor]];
         [button.imageView setTintColor:[UIColor blackColor]];
     }
 }
@@ -390,7 +396,7 @@
     }
     else
     {
-        newSize.height = 44.0;
+        newSize.height = KTAStandardTouchDimension;
     }
     return newSize;
 }

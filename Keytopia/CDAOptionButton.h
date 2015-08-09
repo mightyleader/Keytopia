@@ -6,9 +6,9 @@
 //  Copyright (c) 2015 cocoadelica. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+@import UIKit;
 
-@interface OptionButton : UIButton
+@interface CDAOptionButton : UIButton
 
 - (instancetype)initWithFrame:(CGRect)frame
                      andImage:(UIImage *)image

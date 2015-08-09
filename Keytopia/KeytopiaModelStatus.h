@@ -9,7 +9,7 @@
 @import Foundation;
 #import "ModelProtocol.h"
 
-@interface ModelStatus : NSObject <ModelProtocol>
+@interface KeytopiaModelStatus : NSObject <KeytopiaModelProtocol>
 
 @property (nonatomic, readonly) NSString *message;
 

@@ -6,10 +6,10 @@
 //  Copyright (c) 2015 cocoadelica. All rights reserved.
 //
 
-#import "PhotoLibraryCollection.h"
+#import "KeytopiaPhotoLibraryCollection.h"
 @import Photos;
 
-@interface PhotoLibraryCollection () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout> //PHPhotoLibraryChangeObserver later...
+@interface KeytopiaPhotoLibraryCollection () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout> //PHPhotoLibraryChangeObserver later...
 
 @property (nonatomic, strong) PHFetchResult *assetsFetchResults;
 @property (nonatomic, strong) PHAssetCollection *assetCollection;
@@ -22,7 +22,7 @@
 static NSString * const CellReuseIdentifier = @"Cell";
 static CGSize AssetGridThumbnailSize;
 
-@implementation PhotoLibraryCollection
+@implementation KeytopiaPhotoLibraryCollection
 
 
 - (instancetype)initWithCollectionViewLayout:(UICollectionViewLayout *)layout

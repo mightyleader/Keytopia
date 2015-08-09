@@ -6,17 +6,17 @@
 //  Copyright (c) 2015 cocoadelica. All rights reserved.
 //
 
-#import "Datasource.h"
-#import "ModelMessage.h"
-#import "ModelStatus.h"
+#import "KeytopiaDatasource.h"
+#import "KeytopiaModelMessage.h"
+#import "KeytopiaModelStatus.h"
 
-@interface Datasource ()
+@interface KeytopiaDatasource ()
 
 @property (nonatomic) NSArray *internalData;
 
 @end
 
-@implementation Datasource
+@implementation KeytopiaDatasource
 
 - (instancetype)init
 {
@@ -37,7 +37,7 @@
   return _internalData[index];
 }
 
-- (void)addToDatasource:(id<ModelProtocol>)addition
+- (void)addToDatasource:(id<KeytopiaModelProtocol>)addition
 {
   _internalData = [[self class] addObject:addition toArray:_internalData];
 }
@@ -48,7 +48,7 @@
 {
   NSMutableArray *mutable = [NSMutableArray arrayWithArray:array];
   
-  if (object && [object conformsToProtocol:@protocol(ModelProtocol)])
+  if (object && [object conformsToProtocol:@protocol(KeytopiaModelProtocol)])
   {
     [mutable addObject:object];
   }
@@ -61,16 +61,16 @@
   NSMutableArray *mutableData = [NSMutableArray array];
   for (NSInteger i = 0; i <= 21; i++)
     {
-    id<ModelProtocol> thingToAddToArray;
+    id<KeytopiaModelProtocol> thingToAddToArray;
     
     NSInteger modulus = i % 3;
     if (modulus == 0)
       {
-      thingToAddToArray = [[ModelStatus alloc] initWithMessage:@"User left the room"];
+      thingToAddToArray = [[KeytopiaModelStatus alloc] initWithMessage:@"User left the room"];
       }
     else
       {
-      thingToAddToArray = [[ModelMessage alloc] initWithMessage:@"Hey there!"
+      thingToAddToArray = [[KeytopiaModelMessage alloc] initWithMessage:@"Hey there!"
                                                      datePosted:[NSDate date]
                                                            sent:YES];
       }

@@ -6,10 +6,10 @@
 //  Copyright (c) 2015 cocoadelica. All rights reserved.
 //
 
-#import "ModelMessage.h"
+#import "KeytopiaModelMessage.h"
 #import "UIColor+ColorHelper.h"
 
-@interface ModelMessage ()
+@interface KeytopiaModelMessage ()
 
 @property (nonatomic) NSString *message;
 @property (nonatomic) NSDate   *datePosted;
@@ -17,7 +17,7 @@
 
 @end
 
-@implementation ModelMessage
+@implementation KeytopiaModelMessage
 
 - (instancetype)initWithMessage:(NSString *)message
                      datePosted:(NSDate *)postDate
@@ -42,7 +42,7 @@
     }
   else
     {
-    ModelMessage *objectToTest = object;
+    KeytopiaModelMessage *objectToTest = object;
     
     BOOL messageMatch = [objectToTest.message isEqualToString:_message];
     BOOL dateMatch = [objectToTest.datePosted isEqualToDate:_datePosted];

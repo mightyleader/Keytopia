@@ -6,15 +6,15 @@
 //  Copyright (c) 2015 cocoadelica. All rights reserved.
 //
 
-#import "ModelStatus.h"
+#import "KeytopiaModelStatus.h"
 
-@interface ModelStatus ()
+@interface KeytopiaModelStatus ()
 
 @property (nonatomic) NSString *message;
 
 @end
 
-@implementation ModelStatus
+@implementation KeytopiaModelStatus
 
 - (instancetype)initWithMessage:(NSString *)message
 {
@@ -34,7 +34,7 @@
     }
   else
     {
-    ModelStatus *objectToTest = object;
+    KeytopiaModelStatus *objectToTest = object;
     
     BOOL messageMatch = [objectToTest.message isEqualToString:_message];
     

@@ -6,22 +6,22 @@
 //  Copyright (c) 2015 cocoadelica. All rights reserved.
 //
 
-#import "CameraInputViewController.h"
-#import "PhotoLibraryCollection.h"
+#import "KeytopiaCameraInputViewController.h"
+#import "KeytopiaPhotoLibraryCollection.h"
 
-@interface CameraInputViewController ()
+@interface KeytopiaCameraInputViewController ()
 
-@property (nonatomic) PhotoLibraryCollection *photoLibrary;
+@property (nonatomic) KeytopiaPhotoLibraryCollection *photoLibrary;
 @property (nonatomic) UICollectionViewFlowLayout *flow;
 
 @end
 
-@implementation CameraInputViewController
+@implementation KeytopiaCameraInputViewController
 
 - (void)viewDidLoad {
   [super viewDidLoad];
   _flow = [[UICollectionViewFlowLayout alloc] init];
-  _photoLibrary = [[PhotoLibraryCollection alloc] initWithCollectionViewLayout:_flow];
+  _photoLibrary = [[KeytopiaPhotoLibraryCollection alloc] initWithCollectionViewLayout:_flow];
   [_flow setScrollDirection:UICollectionViewScrollDirectionHorizontal];
   [_flow setEstimatedItemSize:CGSizeMake(100, 100)];
   _photoLibrary.collectionView.frame = self.inputView.frame;

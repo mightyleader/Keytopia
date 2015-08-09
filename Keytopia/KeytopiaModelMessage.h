@@ -10,7 +10,7 @@
 @import UIKit;
 #import "ModelProtocol.h"
 
-@interface ModelMessage : NSObject <ModelProtocol>
+@interface KeytopiaModelMessage : NSObject <KeytopiaModelProtocol>
 
 @property (nonatomic, readonly) NSString *message;
 @property (nonatomic, readonly) NSDate   *datePosted;

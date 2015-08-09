@@ -6,8 +6,8 @@
 //  Copyright (c) 2015 cocoadelica. All rights reserved.
 //
 
-#import "Parser.h"
+#import "KeytopiaParser.h"
 
-@implementation Parser
+@implementation KeytopiaParser
 
 @end

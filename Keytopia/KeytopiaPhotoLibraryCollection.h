@@ -8,6 +8,7 @@
 
 @import UIKit;
 
-@interface PhotoLibraryCollection : UICollectionViewController
+@interface KeytopiaPhotoLibraryCollection : UICollectionViewController
 
 @end
+ 

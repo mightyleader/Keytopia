@@ -8,7 +8,7 @@
 
 @import UIKit;
 
-@interface ViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
+@interface KeytopiaViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
 

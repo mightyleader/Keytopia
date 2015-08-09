@@ -8,7 +8,7 @@
 
 @import Foundation;
 
-@protocol ModelProtocol <NSObject>
+@protocol KeytopiaModelProtocol <NSObject>
 
 - (NSString *)message;
 

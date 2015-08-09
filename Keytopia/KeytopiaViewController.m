@@ -6,11 +6,11 @@
 //  Copyright (c) 2015 cocoadelica. All rights reserved.
 //
 
-#import "ViewController.h"
-#import "AccessoryInputView.h"
-#import "Datasource.h"
-#import "ModelMessage.h"
-#import "ModelStatus.h"
+#import "KeytopiaViewController.h"
+#import "CDAAccessoryInputView.h"
+#import "KeytopiaDatasource.h"
+#import "KeytopiaModelMessage.h"
+#import "KeytopiaModelStatus.h"
 #import "UIColor+ColorHelper.h"
 
 @import QuartzCore;
@@ -19,14 +19,14 @@
 #define kAccessoryInputViewHeight 44.0f
 #define kTableViewTopInset 20.0f
 
-@interface ViewController () <UITextFieldDelegate>
+@interface KeytopiaViewController () <UITextFieldDelegate>
 
-@property (nonatomic) Datasource *datasource;
-@property (nonatomic) AccessoryInputView *accessoryInputView;
+@property (nonatomic) KeytopiaDatasource *datasource;
+@property (nonatomic) CDAAccessoryInputView *accessoryInputView;
 
 @end
 
-@implementation ViewController
+@implementation KeytopiaViewController
 
 /**
  *  All we do here is remove all notifications registered to this instance.
@@ -65,7 +65,7 @@
 
 - (void)setupData
 {
-  _datasource = [[Datasource alloc] init];
+  _datasource = [[KeytopiaDatasource alloc] init];
 }
 
 /**
@@ -142,7 +142,7 @@
   UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"numberCell"];
   
   NSInteger row = indexPath.row;
-  id<ModelProtocol> object = [_datasource objectAtIndex:row];
+  id<KeytopiaModelProtocol> object = [_datasource objectAtIndex:row];
   
   [cell.textLabel setText:[object message]];
   cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -155,16 +155,16 @@
   [cell.textLabel setNumberOfLines:0];
   [cell.textLabel setLineBreakMode:NSLineBreakByWordWrapping];
   
-  if ([object isKindOfClass:[ModelMessage class]]) {
+  if ([object isKindOfClass:[KeytopiaModelMessage class]]) {
     [cell.textLabel setTextAlignment:NSTextAlignmentLeft];
     textColour = [UIColor whiteColor];
     textFont = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
     cell.detailTextLabel.text = [[(ModelMessage *)object datePosted] description];
     cell.textLabel.backgroundColor = [(ModelMessage *)object backgroundColor];
-    textColour = [UIColor textColorForBackgroundColor:[(ModelMessage *)object backgroundColor]];
+    textColour = [UIColor textColorForBackgroundColor:[(KeytopiaModelMessage *)object backgroundColor]];
   }
   
-  if ([object isKindOfClass:[ModelStatus class]]) {
+  if ([object isKindOfClass:[KeytopiaModelStatus class]]) {
     [cell.textLabel setTextAlignment:NSTextAlignmentCenter];
     textColour = [UIColor lightGrayColor];
     textFont = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption2];
@@ -279,9 +279,9 @@
 
 #pragma mark - Accessory Input View
 
-+ (AccessoryInputView *)accessoryInputViewWithFrame:(CGRect)frame
++ (CDAAccessoryInputView *)accessoryInputViewWithFrame:(CGRect)frame
 {
-  AccessoryInputView *inputView = [[AccessoryInputView alloc] initWithFrame:frame
+  CDAAccessoryInputView *inputView = [[CDAAccessoryInputView alloc] initWithFrame:frame
                                                              inputViewStyle:UIInputViewStyleKeyboard];
   return inputView;
 }
@@ -294,7 +294,7 @@
   if ([textField isEqual:_accessoryInputView.textfield]) {
     if (textField.text.length > 0)
       {
-        ModelMessage *message = [[ModelMessage alloc] initWithMessage:textField.text
+        KeytopiaModelMessage *message = [[KeytopiaModelMessage alloc] initWithMessage:textField.text
                                                            datePosted:[NSDate date]
                                                                  sent:YES];
         [_datasource addToDatasource:message];

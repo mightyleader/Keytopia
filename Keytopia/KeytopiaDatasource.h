@@ -9,10 +9,10 @@
 @import Foundation;
 #import "ModelProtocol.h"
 
-@interface Datasource : NSObject
+@interface KeytopiaDatasource : NSObject
 
 - (NSInteger)count;
 - (id)objectAtIndex:(NSInteger)index;
-- (void)addToDatasource:(id<ModelProtocol>)addition;
+- (void)addToDatasource:(id<KeytopiaModelProtocol>)addition;
 
 @end

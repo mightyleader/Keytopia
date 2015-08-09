@@ -6,13 +6,13 @@
 //  Copyright (c) 2015 cocoadelica. All rights reserved.
 //
 
-#import "AppDelegate.h"
+#import "KeytopiaAppDelegate.h"
 
-@interface AppDelegate ()
+@interface KeytopiaAppDelegate ()
 
 @end
 
-@implementation AppDelegate
+@implementation KeytopiaAppDelegate
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {

@@ -6,9 +6,9 @@
 //  Copyright (c) 2015 cocoadelica. All rights reserved.
 //
 
-#import "OptionButton.h"
+#import "CDAOptionButton.h"
 
-@implementation OptionButton
+@implementation CDAOptionButton
 
 - (instancetype)initWithFrame:(CGRect)frame
                      andImage:(UIImage *)image

@@ -6,8 +6,8 @@
 //  Copyright (c) 2015 cocoadelica. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+@import Foundation;
 
-@interface Parser : NSObject
+@interface KeytopiaParser : NSObject
 
 @end

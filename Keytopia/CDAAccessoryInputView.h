@@ -20,10 +20,16 @@ typedef enum : NSUInteger {
   AccessoryInputOptionStickers,
 } AccessoryInputOption;
 
-// simple block definition, no paramters no return
+/**
+ *    @author Rob Stearn, 09-08-15 21:08:36
+ *
+ *    Simple block definition for the option buttons action, returns a BOOL.
+ *
+ *    @param BOOL return value from block code.
+ */
 typedef void(^AccessoryInputViewOptionSelectHandler)(BOOL);
 
-@interface AccessoryInputView : UIInputView
+@interface CDAAccessoryInputView : UIInputView
 
 @property (nonatomic, readonly) UITextField *textfield;
 @property (nonatomic, readonly) UIButton    *optionsButton;
