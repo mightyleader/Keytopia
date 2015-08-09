@@ -56,7 +56,7 @@
         [self setupSubviews];
         [self setupOptionButtonsAndConstraints];
         [self setupConstraints];
-        [self debugViewSettings];
+//      [self debugViewSettings]; //DEBUG PURPOSES ONLY
     }
     return self;
 }
@@ -196,13 +196,13 @@
 {
     NSLayoutConstraint *containerLeft   = [_containingView.leftAnchor constraintEqualToAnchor:self.leftAnchor];
     NSLayoutConstraint *containerRight  = [_containingView.rightAnchor constraintEqualToAnchor:self.rightAnchor];
-    NSLayoutConstraint *containerTop    = [_containingView.topAnchor constraintEqualToAnchor:self.topAnchor];
+    NSLayoutConstraint *containerHeight = [_containingView.heightAnchor constraintEqualToConstant:KTAStandardTouchDimension];
     NSLayoutConstraint *containerBottom = [_containingView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor];
     
     [NSLayoutConstraint activateConstraints:@[containerLeft,
                                               containerRight,
                                               containerBottom,
-                                              containerTop
+                                              containerHeight
                                               ]];
     
     NSLayoutConstraint *buttonRight     = [_optionsButton.rightAnchor constraintEqualToAnchor:self.rightAnchor];
