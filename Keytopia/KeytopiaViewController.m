@@ -159,8 +159,8 @@
     [cell.textLabel setTextAlignment:NSTextAlignmentLeft];
     textColour = [UIColor whiteColor];
     textFont = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-    cell.detailTextLabel.text = [[(ModelMessage *)object datePosted] description];
-    cell.textLabel.backgroundColor = [(ModelMessage *)object backgroundColor];
+    cell.detailTextLabel.text = [[(KeytopiaModelMessage *)object datePosted] description];
+    cell.textLabel.backgroundColor = [(KeytopiaModelMessage *)object backgroundColor];
     textColour = [UIColor textColorForBackgroundColor:[(KeytopiaModelMessage *)object backgroundColor]];
   }
   
