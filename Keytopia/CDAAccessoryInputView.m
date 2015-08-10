@@ -137,7 +137,7 @@
     
     CDAOptionButton *button;
     NSInteger count = optionButtonImageNames.count;
-    CGFloat width   = KTAOptionsButtonWidth;
+    CGFloat width   = (CGRectGetWidth(self.frame) - KTAStandardTouchDimension) / count;
     
     _optionsContainer = [[UIView alloc] initWithFrame:CGRectZero];
     [_optionsContainer setTranslatesAutoresizingMaskIntoConstraints: NO];
