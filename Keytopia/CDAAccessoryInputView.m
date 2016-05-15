@@ -7,13 +7,12 @@
 //
 
 #import "CDAAccessoryInputView.h"
-#import "CDAOptionButton.h"
+#import "CDAOptionButtonsViewController.h"
 #import "KeytopiaPhotoLibraryCollection.h"
 @import QuartzCore;
 
 #define KTAtextEntryIconAlpha       0.2f
 #define KTALayerCornerRadius        5.0f
-#define KTAOptionsButtonWidth       52.0f
 #define KTAStandardTouchDimension   44.0f
 #define ZERO_INT                    0
 #define ZERO_FLOAT                  0.0f
@@ -25,8 +24,9 @@
 @property (nonatomic) UIButton      *optionsButton;
 @property (nonatomic) UIView        *additionalOptionsView;
 
-@property (nonatomic) UIView        *optionsContainer;
-@property (nonatomic) NSArray       *optionButtons;
+@property (nonatomic) CDAOptionButtonsViewController *optionsViewController;
+@property (nonatomic) UIView *optionsContainer;
+@property (nonatomic) NSArray *optionButtons;
 
 @property (nonatomic) BOOL presentingButtons;
 @property (nonatomic) BOOL presentingAttachmentType;
@@ -74,6 +74,8 @@
 
 - (void)setupSubviews
 {
+    _optionsViewController = [[CDAOptionButtonsViewController alloc] init];
+    _optionsContainer = _optionsViewController.view;
     _optionsButton  = [UIButton buttonWithType:UIButtonTypeCustom];
     [_optionsButton setFrame:CGRectZero];
     [_optionsButton setTranslatesAutoresizingMaskIntoConstraints:NO];
@@ -132,51 +134,6 @@
 
 - (void)setupOptionButtonsAndConstraints
 {
-    NSMutableArray *optionButtons = [NSMutableArray array];
-    NSArray *optionButtonImageNames = @[@"Contact", @"BusinessCard", @"Audio", @"Sticker", @"Smartphone", @"Photo" ];
-    
-    CDAOptionButton *button;
-    NSInteger count = optionButtonImageNames.count;
-    CGFloat width   = (CGRectGetWidth(self.frame) - KTAStandardTouchDimension) / count;
-    
-    _optionsContainer = [[UIView alloc] initWithFrame:CGRectZero];
-    [_optionsContainer setTranslatesAutoresizingMaskIntoConstraints: NO];
-    
-    for (NSInteger i = 0; i < count; i++)
-    {
-        UIImage *image = [UIImage imageNamed:optionButtonImageNames[i]];
-        button = [[CDAOptionButton alloc] initWithFrame:CGRectMake(width * i, ZERO_FLOAT, width, KTAStandardTouchDimension)
-                                            andImage:image
-                                           tintColor:[UIColor darkGrayColor]
-                                     backgroundColor:[UIColor clearColor]];
-        [button setTranslatesAutoresizingMaskIntoConstraints: NO];
-        [button setTag:i];
-        [button addTarget:self
-                   action:@selector(toggleOptionsWithConstraints:)
-         forControlEvents:UIControlEventTouchUpInside];
-        [optionButtons addObject:button];
-        [_optionsContainer addSubview:button];
-        if (i == ZERO_INT)
-        {
-            [NSLayoutConstraint activateConstraints: @[
-                                                       [button.leadingAnchor constraintEqualToAnchor: _optionsContainer.leadingAnchor],
-                                                       [button.topAnchor constraintEqualToAnchor: _optionsContainer.topAnchor],
-                                                       [button.bottomAnchor constraintEqualToAnchor:_optionsContainer.bottomAnchor],
-                                                       [button.widthAnchor constraintEqualToConstant:width]
-                                                       ]];
-        }
-        else
-        {
-            CDAOptionButton *previousButton = (CDAOptionButton *)[optionButtons objectAtIndex: i - 1];
-            [NSLayoutConstraint activateConstraints: @[
-                                                       [button.leadingAnchor constraintEqualToAnchor: previousButton.trailingAnchor],
-                                                       [button.topAnchor constraintEqualToAnchor: previousButton.topAnchor],
-                                                       [button.bottomAnchor constraintEqualToAnchor:_optionsContainer.bottomAnchor],
-                                                       [button.widthAnchor constraintEqualToConstant:width]
-                                                       ]];
-        }
-    }
-    
     [_containingView addSubview:_optionsContainer];
     
     _optionsShowingLeadingConstraint = [_optionsContainer.leadingAnchor constraintEqualToAnchor: _containingView.leadingAnchor];
@@ -185,11 +142,11 @@
     [NSLayoutConstraint activateConstraints: @[
                                                [_optionsContainer.bottomAnchor constraintEqualToAnchor: _containingView.bottomAnchor],
                                                [_optionsContainer.heightAnchor constraintEqualToAnchor: _containingView.heightAnchor],
-                                               [_optionsContainer.widthAnchor constraintEqualToConstant:(count * width)]
+                                               [_optionsContainer.widthAnchor constraintEqualToConstant:200]
                                                ]];
     
     [NSLayoutConstraint activateConstraints: @[_optionsHiddenLeadingConstraint]];
-    _optionButtons = [NSArray arrayWithArray:optionButtons];
+    _optionButtons = [NSArray arrayWithArray:_optionsViewController.optionButtons];
 }
 
 - (void)setupConstraints
@@ -264,7 +221,7 @@
      ^{
          [self changeOptionsButtonImage:!_presentingButtons];
          [_textfield setAlpha:isShowingOptions];
-         [self deselectAllButtons];
+         [self.optionsViewController deselectAllButtons];
          if ([sender isKindOfClass:[UIView class]]) {
              sendingView.transform = CGAffineTransformScale(CGAffineTransformIdentity, 0.7, 0.7);
          }
@@ -280,7 +237,6 @@
              [NSLayoutConstraint activateConstraints: @[_optionsHiddenLeadingConstraint]];
          }
          [self layoutIfNeeded];
-         
          
      } completion:^(BOOL finished) {
          sendingView.transform = CGAffineTransformIdentity;
@@ -336,49 +292,6 @@
     }
     [_optionsButton setImage:image forState:UIControlStateNormal];
 }
-
-
-- (void)deselectAllButtons
-{
-    for (UIButton *button in _optionButtons) {
-        [button setBackgroundColor:[UIColor clearColor]];
-        [button.imageView setTintColor:[UIColor blackColor]];
-    }
-}
-
-
-- (void)handleOptionBlockForButton:(id)sender
-{
-    AccessoryInputOption chosenOption = [sender tag];
-    BOOL show = YES;
-    
-    if (!_presentingAttachmentType) {
-        [self changeHeightConstraintToPresenting:YES];
-    }
-    
-    // Manage selection state
-    [self deselectAllButtons];
-    [sender setBackgroundColor:[UIColor darkGrayColor]];
-    [[sender imageView] setTintColor:[UIColor whiteColor]];
-    
-    // Call any associated block code
-    switch (chosenOption) {
-        case AccessoryInputOptionCamera:
-        case AccessoryInputOptionPhotoLibrary:
-        case AccessoryInputOptionAudioRecord:
-        case AccessoryInputOptionPDFMe:
-        case AccessoryInputOptionVCard:
-        case AccessoryInputOptionStickers:
-        {
-            self.photoHandler(show);
-        }
-            break;
-        default:
-            return;
-            break;
-    }
-}
-
 
 - (void)changeHeightConstraintToPresenting:(BOOL)presenting
 {

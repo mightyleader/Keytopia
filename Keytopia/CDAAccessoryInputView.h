@@ -9,18 +9,6 @@
 @import UIKit;
 
 /**
- Wrapper around the tag value of the options buttons for readability
- */
-typedef enum : NSUInteger {
-  AccessoryInputOptionCamera = 0,
-  AccessoryInputOptionPhotoLibrary,
-  AccessoryInputOptionAudioRecord,
-  AccessoryInputOptionPDFMe,
-  AccessoryInputOptionVCard,
-  AccessoryInputOptionStickers,
-} AccessoryInputOption;
-
-/**
  *    @author Rob Stearn, 09-08-15 21:08:36
  *
  *    Simple block definition for the option buttons action, returns a BOOL.

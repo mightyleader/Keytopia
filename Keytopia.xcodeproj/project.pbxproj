@@ -17,6 +17,7 @@
 		D43CBA351AFE0D0500644E7A /* CDAOptionButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D43CBA331AFE0D0500644E7A /* CDAOptionButton.m */; };
 		D43CBA391AFF75E100644E7A /* KeytopiaPhotoLibraryCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = D43CBA381AFF75E100644E7A /* KeytopiaPhotoLibraryCollection.m */; };
 		D43CBA3A1AFF75E100644E7A /* KeytopiaPhotoLibraryCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = D43CBA381AFF75E100644E7A /* KeytopiaPhotoLibraryCollection.m */; };
+		D459660F1B7B30F2006E68C2 /* CDAOptionButtonsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D459660E1B7B30F2006E68C2 /* CDAOptionButtonsViewController.m */; };
 		D4B03A2F1B43F3BB00336906 /* UIColor+ColorHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D4B03A2E1B43F3BB00336906 /* UIColor+ColorHelper.m */; };
 		D4BF21861B1B1FE2001B7AB8 /* KeytopiaCameraInputViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D4BF21851B1B1FE2001B7AB8 /* KeytopiaCameraInputViewController.m */; };
 		D4D7E4991AF9433600A25168 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D4D7E4981AF9433600A25168 /* main.m */; };
@@ -54,6 +55,8 @@
 		D43CBA331AFE0D0500644E7A /* CDAOptionButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDAOptionButton.m; sourceTree = "<group>"; };
 		D43CBA371AFF75E100644E7A /* KeytopiaPhotoLibraryCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeytopiaPhotoLibraryCollection.h; sourceTree = "<group>"; };
 		D43CBA381AFF75E100644E7A /* KeytopiaPhotoLibraryCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeytopiaPhotoLibraryCollection.m; sourceTree = "<group>"; };
+		D459660D1B7B30F2006E68C2 /* CDAOptionButtonsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDAOptionButtonsViewController.h; sourceTree = "<group>"; };
+		D459660E1B7B30F2006E68C2 /* CDAOptionButtonsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDAOptionButtonsViewController.m; sourceTree = "<group>"; };
 		D4B03A2D1B43F3BB00336906 /* UIColor+ColorHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+ColorHelper.h"; sourceTree = "<group>"; };
 		D4B03A2E1B43F3BB00336906 /* UIColor+ColorHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+ColorHelper.m"; sourceTree = "<group>"; };
 		D4BF21841B1B1FE2001B7AB8 /* KeytopiaCameraInputViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeytopiaCameraInputViewController.h; sourceTree = "<group>"; };
@@ -134,23 +137,34 @@
 		D43CBA311AFE0B0300644E7A /* InputView */ = {
 			isa = PBXGroup;
 			children = (
+				D45966111B7B3124006E68C2 /* OptionsContent */,
+				D45966101B7B3110006E68C2 /* OptionButtons */,
 				D43CBA1C1AFB58A100644E7A /* CDAAccessoryInputView.h */,
 				D43CBA1D1AFB58A100644E7A /* CDAAccessoryInputView.m */,
-				D43CBA321AFE0D0500644E7A /* CDAOptionButton.h */,
-				D43CBA331AFE0D0500644E7A /* CDAOptionButton.m */,
-				D4BF21841B1B1FE2001B7AB8 /* KeytopiaCameraInputViewController.h */,
-				D4BF21851B1B1FE2001B7AB8 /* KeytopiaCameraInputViewController.m */,
 			);
 			name = InputView;
 			sourceTree = "<group>";
 		};
-		D43CBA361AFF75A800644E7A /* Options */ = {
+		D45966101B7B3110006E68C2 /* OptionButtons */ = {
+			isa = PBXGroup;
+			children = (
+				D43CBA321AFE0D0500644E7A /* CDAOptionButton.h */,
+				D43CBA331AFE0D0500644E7A /* CDAOptionButton.m */,
+				D459660D1B7B30F2006E68C2 /* CDAOptionButtonsViewController.h */,
+				D459660E1B7B30F2006E68C2 /* CDAOptionButtonsViewController.m */,
+			);
+			name = OptionButtons;
+			sourceTree = "<group>";
+		};
+		D45966111B7B3124006E68C2 /* OptionsContent */ = {
 			isa = PBXGroup;
 			children = (
 				D43CBA371AFF75E100644E7A /* KeytopiaPhotoLibraryCollection.h */,
 				D43CBA381AFF75E100644E7A /* KeytopiaPhotoLibraryCollection.m */,
+				D4BF21841B1B1FE2001B7AB8 /* KeytopiaCameraInputViewController.h */,
+				D4BF21851B1B1FE2001B7AB8 /* KeytopiaCameraInputViewController.m */,
 			);
-			name = Options;
+			name = OptionsContent;
 			sourceTree = "<group>";
 		};
 		D4B03A2C1B43F37500336906 /* Helpers */ = {
@@ -184,7 +198,6 @@
 			isa = PBXGroup;
 			children = (
 				D4B03A2C1B43F37500336906 /* Helpers */,
-				D43CBA361AFF75A800644E7A /* Options */,
 				D43CBA311AFE0B0300644E7A /* InputView */,
 				D43CBA2F1AFC9D4E00644E7A /* Persistence */,
 				D43CBA2D1AFC9C7800644E7A /* Data */,
@@ -333,6 +346,7 @@
 				D43CBA1E1AFB58A100644E7A /* CDAAccessoryInputView.m in Sources */,
 				D43CBA341AFE0D0500644E7A /* CDAOptionButton.m in Sources */,
 				D43CBA391AFF75E100644E7A /* KeytopiaPhotoLibraryCollection.m in Sources */,
+				D459660F1B7B30F2006E68C2 /* CDAOptionButtonsViewController.m in Sources */,
 				D43CBA251AFC9C3000644E7A /* KeytopiaModelMessage.m in Sources */,
 				D43CBA211AFBD9D800644E7A /* KeytopiaDatasource.m in Sources */,
 				D4D7E4991AF9433600A25168 /* main.m in Sources */,
