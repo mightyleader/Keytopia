@@ -142,7 +142,7 @@
     [NSLayoutConstraint activateConstraints: @[
                                                [_optionsContainer.bottomAnchor constraintEqualToAnchor: _containingView.bottomAnchor],
                                                [_optionsContainer.heightAnchor constraintEqualToAnchor: _containingView.heightAnchor],
-                                               [_optionsContainer.widthAnchor constraintEqualToConstant:200]
+                                               [_optionsContainer.widthAnchor constraintEqualToAnchor:_containingView.widthAnchor] //TOO WIDE
                                                ]];
     
     [NSLayoutConstraint activateConstraints: @[_optionsHiddenLeadingConstraint]];
@@ -209,7 +209,7 @@
     CGRect frame    = _optionsContainer.frame;
     CGFloat startx  = CGRectGetMaxX(self.frame);
     CGFloat endx  = CGRectGetMinX(_optionsButton.frame) - CGRectGetWidth(frame);
-    BOOL isShowingOptions = _optionsShowingLeadingConstraint.isActive;
+    __block BOOL isShowingOptions = _optionsShowingLeadingConstraint.isActive;
     frame.origin.x  =  isShowingOptions ? startx : endx; // Move based on current position
     __block UIView *sendingView = sender;
     [UIView animateWithDuration:0.2
@@ -220,72 +220,36 @@
                      animations:
      ^{
          [self changeOptionsButtonImage:!_presentingButtons];
-         [_textfield setAlpha:isShowingOptions];
          [self.optionsViewController deselectAllButtons];
          if ([sender isKindOfClass:[UIView class]]) {
              sendingView.transform = CGAffineTransformScale(CGAffineTransformIdentity, 0.7, 0.7);
          }
-         
-         if (!isShowingOptions)
-         {
-             [NSLayoutConstraint deactivateConstraints: @[_optionsHiddenLeadingConstraint]];
-             [NSLayoutConstraint activateConstraints: @[_optionsShowingLeadingConstraint]];
-         }
-         else
-         {
-             [NSLayoutConstraint deactivateConstraints: @[_optionsShowingLeadingConstraint]];
-             [NSLayoutConstraint activateConstraints: @[_optionsHiddenLeadingConstraint]];
-         }
-         [self layoutIfNeeded];
-         
+         [self toggleOptionButtons:isShowingOptions];
      } completion:^(BOOL finished) {
          sendingView.transform = CGAffineTransformIdentity;
          _presentingButtons = !_presentingButtons;
          [self invalidateIntrinsicContentSize];
-         if (_presentingAttachmentType)
-         {
-             [self toggleOptionsWithConstraints:_optionsButton];
-         }
      }];
 }
 
-- (void)toggleOptionsWithConstraints:(id)sender
+- (void)toggleOptionButtons:(BOOL)show
 {
-    NSLayoutConstraint *optionsHeight = [_optionsContainer.heightAnchor constraintEqualToAnchor: _optionsButton.heightAnchor];
-    [NSLayoutConstraint activateConstraints: @[optionsHeight]];
-    
-    [_containingView bringSubviewToFront: _optionsContainer];
-    
-    __block UIView *sendingView = sender;
-    __block NSLayoutConstraint *correctHeightConstraint     = _additionalShowingHeightConstraint;
-    __block NSLayoutConstraint *incorrectHeightConstraint   = _additionalHiddenHeightConstraint;
-    
-    if ( _presentingAttachmentType ) {
-        correctHeightConstraint     = _additionalHiddenHeightConstraint;
-        incorrectHeightConstraint   = _additionalShowingHeightConstraint;
+    if (!show)
+    {
+        [NSLayoutConstraint deactivateConstraints: @[_optionsHiddenLeadingConstraint]];
+        [NSLayoutConstraint activateConstraints: @[_optionsShowingLeadingConstraint]];
     }
-    
-    [UIView animateWithDuration:0.1
-                          delay:ZERO_FLOAT
-         usingSpringWithDamping:0.4
-          initialSpringVelocity:0.4
-                        options:UIViewAnimationOptionCurveEaseInOut
-                     animations:^{
-                         sendingView.transform = CGAffineTransformScale(CGAffineTransformIdentity, 0.7, 0.7);
-                         [NSLayoutConstraint deactivateConstraints:@[incorrectHeightConstraint]];
-                         [NSLayoutConstraint activateConstraints:@[correctHeightConstraint]];
-                         [self invalidateIntrinsicContentSize];
-                         [self layoutIfNeeded];
-                     }
-                     completion:^(BOOL finished){
-                          _presentingAttachmentType = !_presentingAttachmentType;
-                         sendingView.transform = CGAffineTransformIdentity;
-                     }];
+    else
+    {
+        [NSLayoutConstraint deactivateConstraints: @[_optionsShowingLeadingConstraint]];
+        [NSLayoutConstraint activateConstraints: @[_optionsHiddenLeadingConstraint]];
+    }
+    [self layoutIfNeeded];
 }
-
 
 - (void)changeOptionsButtonImage:(BOOL)presenting
 {
+    [_textfield setAlpha:!presenting];
     UIImage *image = [UIImage imageNamed:@"paperclip"];
     if (presenting) {
         image = [UIImage imageNamed:@"CloseButton"];
@@ -299,7 +263,6 @@
     [self invalidateIntrinsicContentSize];
 }
 
-
 - (CGSize)intrinsicContentSize
 {
     CGSize newSize = self.bounds.size;
@@ -312,14 +275,6 @@
         newSize.height = KTAStandardTouchDimension;
     }
     return newSize;
-}
-
-
-#pragma mark - STUFF
-
-- (void)setupOptionalContentViews
-{
-    
 }
 
 

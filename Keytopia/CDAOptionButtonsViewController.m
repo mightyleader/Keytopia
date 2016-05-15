@@ -15,6 +15,10 @@
 
 @interface CDAOptionButtonsViewController ()
 
+@property (nonatomic) NSLayoutConstraint *additionalHiddenHeightConstraint;
+@property (nonatomic) NSLayoutConstraint *additionalShowingHeightConstraint;
+@property (nonatomic) BOOL presentingAttachmentType;
+
 @end
 
 @implementation CDAOptionButtonsViewController
@@ -24,6 +28,11 @@
     [super viewDidLoad];
     [self.view setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self setupButtons];
+    [self setupConstraints];
+    _presentingAttachmentType = NO;
+    
+    //DEBUG
+    self.view.backgroundColor = [UIColor colorWithRed:0.0 green:1.0 blue:0.0 alpha:0.5];
 }
 
 - (void)setupButtons
@@ -40,8 +49,6 @@
     NSInteger count = optionButtonImageNames.count;
     CGFloat width   = (CGRectGetWidth(self.view.frame) - KTAStandardTouchDimension) / count;
     
-//    _optionsContainer = [[UIView alloc] initWithFrame:CGRectZero];
-//    [_optionsContainer setTranslatesAutoresizingMaskIntoConstraints: NO];
     
     for (NSInteger i = 0; i < count; i++)
     {
@@ -77,17 +84,52 @@
                                                        ]];
         }
     }
+}
 
+- (void)setupConstraints
+{
+    _additionalHiddenHeightConstraint   = [self.view.heightAnchor constraintEqualToConstant:44.0f];
+    _additionalShowingHeightConstraint  = [self.view.heightAnchor constraintEqualToConstant:116.0f];
+    _additionalShowingHeightConstraint.active = YES;
+}
+
+- (void)toggleOptionsWithConstraints:(id)sender
+{
+    __block UIView *sendingView = sender;
+    __block NSLayoutConstraint *correctHeightConstraint     = _additionalShowingHeightConstraint;
+    __block NSLayoutConstraint *incorrectHeightConstraint   = _additionalHiddenHeightConstraint;
+    
+    if ( _presentingAttachmentType ) {
+        correctHeightConstraint     = _additionalHiddenHeightConstraint;
+        incorrectHeightConstraint   = _additionalShowingHeightConstraint;
+    }
+    
+    [UIView animateWithDuration:0.1
+                          delay:0.0
+         usingSpringWithDamping:0.4
+          initialSpringVelocity:0.4
+                        options:UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+                         sendingView.transform = CGAffineTransformScale(CGAffineTransformIdentity, 0.7, 0.7);
+                         [NSLayoutConstraint deactivateConstraints:@[incorrectHeightConstraint]];
+                         [NSLayoutConstraint activateConstraints:@[correctHeightConstraint]];
+                         [self.view invalidateIntrinsicContentSize];
+                         [self.view layoutIfNeeded];
+                     }
+                     completion:^(BOOL finished){
+                         _presentingAttachmentType = !_presentingAttachmentType;
+                         sendingView.transform = CGAffineTransformIdentity;
+                     }];
 }
 
 - (void)handleOptionBlockForButton:(id)sender
 {
     AccessoryInputOption chosenOption = [sender tag];
-    BOOL show = YES;
+//    BOOL show = YES;
     
-    if (!_presentingAttachmentType) {
-        [self changeHeightConstraintToPresenting:YES];
-    }
+//    if (!_presentingAttachmentType) {
+//        [self changeHeightConstraintToPresenting:YES];
+//    }
     
     // Manage selection state
     [self deselectAllButtons];
@@ -103,7 +145,7 @@
         case AccessoryInputOptionVCard:
         case AccessoryInputOptionStickers:
         {
-            self.photoHandler(show);
+//            self.photoHandler(show);
         }
             break;
         default:
